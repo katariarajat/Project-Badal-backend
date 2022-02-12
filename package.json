@@ -1,0 +1,28 @@
+{
+  "name": "project-badal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/katariarajat/Project-Badal-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/katariarajat/Project-Badal-backend/issues"
+  },
+  "homepage": "https://github.com/katariarajat/Project-Badal-backend#readme",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "express": "^4.17.2",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.8.0",
+    "mongoose": "^6.2.1",
+    "nodemon": "^2.0.15"
+  }
+}
