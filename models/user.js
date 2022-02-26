@@ -3,20 +3,43 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userschema = new Schema({
-    email: {
+    name:{
         type: String,
-        required: true
     },
-    password: {
+    username:{
+        type:String,
+    },
+    email:{
+        type:String,
+    },
+    contact:{
         type: String,
-        required: true
     },
-    createdEvents: [
-        {
-            type: Schema.Types.ObjectId,
-            ref : 'Event'
-        }
-    ]
+    address:{
+        type: String,
+    },
+    pincode:{
+        type: String,
+    },
+    type:{
+        type: String,
+    },
+    password:{
+        type: String,
+    },
+    created_at:{
+        type: Date,
+    },
+    updated_at:{
+        type: Date,
+    },
+    deleted_at:{
+        type: Date,
+    },
+    organisationId:{
+        types: Schema.Types.ObjectId,
+        ref:"Organisation" 
+    },
 });
 
 module.exports = mongoose.model('User',userschema);

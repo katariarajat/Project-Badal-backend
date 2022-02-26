@@ -6,14 +6,17 @@ const OrganisationSchema = new Schema({
     name:{
         type: String,
     },
+    email:{
+        type:String, 
+    },
     address: {
          type: String,
     },
     pincode:{
-        type:Number
+        type : String
     },
     contact:{
-        type: String
+        type: String,
     },
     size:{
         type: String,
