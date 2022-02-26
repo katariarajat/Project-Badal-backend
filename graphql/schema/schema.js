@@ -46,12 +46,20 @@ type User {
 }
 
 type projects{
-
+    name:String
+    brief:String
+    problem_statement:String
+    fileUrl:String
+    domain:String
+    created_at:String
+    updated_at : String
+    deleted_at : String
+    organisation: String
 }
 
 input UserInput{
     email: String!
-    password: String
+    password: String!
     name: String!
     contact:String
     regerenceId: String
@@ -66,12 +74,12 @@ input UserInput{
 }
 
 input OrganisationInput{
-    name: String!
-    address: String!
-    pincode: Number!
-    contact: String!
-    size: String!    
-    company_description: String!
+    name: String
+    address: String
+    pincode: String
+    contact: String
+    size: String    
+    company_description: String
     urlWebsite : String
     created_at: String      
     updated_at: String
