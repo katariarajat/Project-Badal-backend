@@ -3,7 +3,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const featureSchema = new Schema({
-    name: {
+
+    endDate:{
+        type: Date,
+    },
+    assigned_to:{   
+        types: Schema.Types.ObjectId,
+        ref: 'Team'
+    },name: {
         type: String,
         required: true
     },
@@ -36,15 +43,7 @@ const featureSchema = new Schema({
         required: false
     },
     startDate:{
-        type: Date,
-    },
-    endDate:{
-        type: Date,
-    },
-    assigned_to:{   
-        types: Schema.Types.ObjectId,
-        ref: 'Team'
-    },
+        
     modules: {
         types: Schema.Types.ObjectId,
         ref: 'Module'

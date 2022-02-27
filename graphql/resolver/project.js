@@ -21,15 +21,15 @@ module.exports = {
     createProject: async args => {
         try {
           const project = new Project({
-            name: args.projectinput.name,
-            brief: args.projectinput.brief,
-            problem_statement: args.projectinput.problem_statement,
+            name : args.projectinput.name,
+            brief:args.projectinput.brief,
+            problem_statement:args.projectinput.problem_statement,
             fileUrl:args.projectinput.fileUrl,
-            domain: args.projectinput.domain,
+            domain:args.projectinput.domain,
             created_at:new Date().toString(),
-            updated_at :  new Date().toString(),
+            updated_at : new Date().toString(),
             deleted_at : null,
-            organisation: args.projectinput.organisation,
+            organisationId: args.projectinput.organisationId,
           });
     
           const result = await project.save();

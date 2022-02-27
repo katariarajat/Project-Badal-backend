@@ -5,7 +5,7 @@ const projectsResolver = require('./project');
 const rootResolver = {
   ...authResolver,
   ...organisationResolver,
-  ...bookingResolver
+  ...projectsResolver
 };
 
 module.exports = rootResolver;

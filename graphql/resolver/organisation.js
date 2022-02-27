@@ -3,7 +3,7 @@ const Organisation = require('../../models/organisation');
 module.exports = {
     createOrganisation: async args => {
         try {
-          const existingOrganisation = await Organisation.findOne({email: args.organisationinput.email});
+          const existingOrganisation = await Organisation.findOne({name: args.organisationinput.name});
           if (existingOrganisation) {
             throw new Error('Organisation exists already.');
           }
@@ -30,7 +30,7 @@ module.exports = {
         }
       },
 
-      organisations : () => {
+      organisations : async () => { 
         try {
             const existingOrganisation = await Organisation.find({});
             if (!existingOrganisation) {
