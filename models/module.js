@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const eventSchema = new Schema({
-    project: {
-        types: Schema.Types.ObjectId,
+    projectId: {
+        type: Schema.Types.ObjectId,
         ref: 'Project'
     },
     description:{
@@ -29,7 +29,7 @@ const eventSchema = new Schema({
         type:Date,
     },
     assigned_to:{
-        types : Schema.Types.ObjectId,
+        type : Schema.Types.ObjectId,
         ref: 'Team'
     }
 });

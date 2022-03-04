@@ -1,7 +1,7 @@
-const Project = require('../../models/Projects');
+const Project = require('../../models/project');
 
 module.exports = {
-    projects : async function(){
+    GetAllProjects : async function(){
         try {
             const existingprojects = await Project.find({});
             if (!existingprojects) {
@@ -18,7 +18,7 @@ module.exports = {
           }
     },
 
-    createProject: async args => {
+    CreateProject: async args => {
         try {
           const project = new Project({
             name : args.projectinput.name,
@@ -29,7 +29,8 @@ module.exports = {
             created_at:new Date().toString(),
             updated_at : new Date().toString(),
             deleted_at : null,
-            organisationId: args.projectinput.organisationId,
+            NGOId: args.projectinput.NGOId,
+            status:args.projectinput.status,
           });
     
           const result = await project.save();
@@ -39,6 +40,39 @@ module.exports = {
           throw err;
         }
       },
+      UpdateStatusOfProject: async (args) =>{
+        try
+        {
+          const project = await Project.findOne({_id:args.projectId});
+          // console.log(project)
+          if(!project)
+          {
+            throw new Error("Project Not Found");
+          }
+          project.status=args.status;
+          project.updated_at=new Date().toString();
+          const result=await project.save();
+          
+          return {...result._doc,_id:result.id};
+
+        }
+        catch
+        {
+          return new Error("Couldn't change Status");
+        }
+        
+      },
+      MyProjects: async (args)=> {
+        try{
+          const NgoProjects=await Project.find({NGOId:args.NGOId});
+        return NgoProjects.map(NgoProjects => {
+          return {...NgoProjects._doc,_id:NgoProjects.id};
+        });
+        }
+        catch{
+          throw err;
+        }
+      }
     
 }
 

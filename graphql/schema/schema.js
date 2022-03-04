@@ -30,15 +30,16 @@ input OrganisationInput{
 }
 
 type Module{
-    project: String,
-    description: String,
-    status: String,
-    start_date: String,
-    end_date:String,
-    created_at:String,
-    updated_at:String,
-    deleted_at:String,
-    assigned_to:String
+    _id: ID
+    projectId: String!
+    description: String
+    status: String
+    start_date:String
+    end_date: String
+    created_at: String
+    updated_at:String
+    deleted_at: String
+    assigned_to: String
 }
 
 type User {
@@ -80,7 +81,8 @@ type Project{
     created_at:String
     updated_at : String
     deleted_at : String
-    organisationId : String
+    NGOId : String
+    status: String
 }
 
 input ProjectInput{
@@ -92,18 +94,19 @@ input ProjectInput{
     created_at:String
     updated_at : String
     deleted_at : String
-    organisationId : String
+    NGOId : String
+    status: String
 }
 
-type Module{
-    project: String,
-    description: String,
-    status: String,
-    start_date:String,
-    end_date: String,
-    created_at: String,
-    updated_at:String,
-    deleted_at: String,
+input ModuleInput{
+    projectId: String!
+    description: String
+    status: String
+    start_date:String
+    end_date: String
+    created_at: String
+    updated_at:String
+    deleted_at: String
     assigned_to: String
 }
 
@@ -141,6 +144,7 @@ type Solution{
 }
 
 type Task{
+    _id:ID
     name: String
     brief: String
     assigned_to: String
@@ -150,6 +154,15 @@ type Task{
     participantsId:[String]
 }
 
+input TaskInput{
+    name: String
+    brief: String
+    assigned_to: String
+    FeatureId:String
+    created_at: String
+    updated_at: String
+    participantsId:[String]
+}
 type AuthData{
     userId: ID!
     token: String!
@@ -165,13 +178,19 @@ enum USERCHARTYPE {
 type RootQuery {
     organisations : [Organisation!]
     login(email: String!, password: String!) : AuthData
+    ShowTeams : [Team!]!
+    GetAllProjects : [Project!]!
+    MyProjects(NGOId : String!) : [Project]!
+    GetModuleForProjectById(projectId: String!) : [Module]!
 }
 
 type RootMutation {
     createUser(userinput: UserInput): User!
     createOrganisation(organisationinput: OrganisationInput): Organisation!
-    createProject(projectinput: ProjectInput) : Project!
-    createTeam(teaminput: TeamInput) : Team!
+    CreateProject(projectinput: ProjectInput) : Project!
+    UpdateStatusOfProject(projectId: String!, status: String!): Project!
+    AddModuleToProjectById(moduleInput : ModuleInput) : Module
+    UpdateModuleStatus(status: String!,moduleId: String!) : Module!
 }
 
 schema {

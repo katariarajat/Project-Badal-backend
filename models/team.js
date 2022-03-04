@@ -8,24 +8,24 @@ const eventSchema = new Schema({
     },
     ModuleId:[
         {
-        types: Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Module'
         }
     ],
     participants : [
             {
-                types: Schema.Types.ObjectId,
+                type: Schema.Types.ObjectId,
                 ref: 'Participants'
             }
     ],
     taskMeta : [
         {
-            types: Schema.Types.ObjectId,
+            type : Schema.Types.ObjectId,
             ref: 'TaskMeta'
         }
     ],
     organisation : {
-        types: Schema.Types.ObjectId,
+        type : Schema.Types.ObjectId,
         ref: 'Organisation'
     }
 });

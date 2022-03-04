@@ -11,7 +11,8 @@ const eventSchema = new Schema({
     created_at:String,
     updated_at : String,
     deleted_at : String,
-    organisationId: String,
+    NGOId: String,
+    status: String,
 });
 
 module.exports = mongoose.model('Project', eventSchema);

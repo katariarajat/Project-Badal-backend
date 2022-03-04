@@ -13,9 +13,9 @@ const eventSchema = new Schema({
         types: Schema.Types.ObjectId,
         ref:'Team'
     },
-    FeatureId:{
+    ModuleId:{
         types: Schema.Types.ObjectId,
-        ref: 'Feature' 
+        ref: 'Module' 
     },
     created_at:{
         type:Date,
@@ -23,12 +23,6 @@ const eventSchema = new Schema({
     updated_at:{
         type:Date,
     },
-    participantsId:[
-        {
-            types: Schema.Types.ObjectId,
-            ref: 'Participant'
-        }
-    ]
 });
 
 module.exports = mongoose.model('Task', eventSchema);

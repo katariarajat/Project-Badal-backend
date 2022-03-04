@@ -1,4 +1,4 @@
-const Team = require("../../models/teams")
+const Team = require("../../models/team")
 
 module.exports = {
     createTeam: async function(req, args){
