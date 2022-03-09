@@ -1,4 +1,5 @@
-const Team = require("../../models/team")
+const Team = require("../../models/team");
+const user = require("../../models/user");
 
 module.exports = {
     createTeam: async function(req, args){
@@ -9,12 +10,14 @@ module.exports = {
             }
             else 
             {
+                const user = await user.findOne({_id : req.userId});
+
                 const newteam= new Team({
                     name: args.teaminput.name,
                     ModuleId: null,
                     participants : [req.userId],
-                    taskMeta: null,
-                    organisation: args.teaminput.organisation, 
+                    taskMeta: args.teaminput.taskMeta,
+                    organisation: user.organisationId, 
                 });
 
                 newteam.save().then(result => {
@@ -44,6 +47,8 @@ module.exports = {
         catch{
             throw err;
         }
-        
+    },
+    AddUserToTeam: async () =>{
+
     }   
 }

@@ -10,6 +10,7 @@ const userschema = new Schema({
     address: String,
     pincode: String,
     type: String,
+    iscore : String,
     created_at: String, 
     updated_at: String,
     deleted_at: String,

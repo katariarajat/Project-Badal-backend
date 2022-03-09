@@ -19,7 +19,8 @@ module.exports = {
             urlWebsite : args.organisationinput.urlWebsite,
             created_at: new Date().toString(),      
             updated_at: new Date().toString(),
-            deleted_at: null
+            deleted_at: null,
+            type: args.organisationinput.type,
           });
     
           const result = await organisation.save();
@@ -45,6 +46,28 @@ module.exports = {
           } catch (err) {
             throw err;
           }
+      },
+      GetNgo:async () => {
+        try{
+          const ngo = await Organisation.find({type : "NGO"});
+          return Organisation.map(organisation => {
+            return {...organisation._doc,_id : organisation.id};
+          });
+        }
+        catch{
+          throw err;
+        }
+      },
+      GetCompany : async () => {
+        try{
+          const company= await Organisation.find({type: "COMP"});
+          return company.map(company => {
+            return {...company._doc,_id:company.id};
+          });
+        }
+        catch{
+          throw err;
+        }
       },
 
 }

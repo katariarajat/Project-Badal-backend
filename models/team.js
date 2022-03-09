@@ -24,7 +24,7 @@ const eventSchema = new Schema({
             ref: 'TaskMeta'
         }
     ],
-    organisation : {
+    organisationId : {
         type : Schema.Types.ObjectId,
         ref: 'Organisation'
     }

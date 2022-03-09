@@ -24,7 +24,9 @@ module.exports = {
     GetModuleForProjectById : async (args) => {
         try{
             const modules = await Module.find({projectId: args.projectId});
-            return modules;
+            return modules.map(modules => {
+                return {...modules._doc,_id: modules.id};
+            });
         }
         catch{
             throw err;

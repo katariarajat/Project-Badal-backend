@@ -9,20 +9,11 @@ const eventSchema = new Schema({
     brief:{
         type: String,
     },
-    assigned_to:{
-        types: Schema.Types.ObjectId,
-        ref:'Team'
-    },
-    ModuleId:{
-        types: Schema.Types.ObjectId,
-        ref: 'Module' 
-    },
-    created_at:{
-        type:Date,
-    },
-    updated_at:{
-        type:Date,
-    },
+    assigned_to: String,
+    ModuleId: String,
+    created_at: String,
+    updated_at:String,
+    status: String,
 });
 
 module.exports = mongoose.model('Task', eventSchema);

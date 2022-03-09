@@ -25,6 +25,7 @@ module.exports = {
           type: args.userinput.type,
           created_at: new Date().toString(),
           organisationId: args.userinput.organisationId,
+          iscore: args.userinput.iscore,
         });
   
         const result = await user.save();
@@ -44,7 +45,7 @@ module.exports = {
         throw new Error('Password is incorrect!');
       }
       const token = jwt.sign(
-        { userId: user.id, email: user.email },
+        {userId: user.id, email: user.email },
         'ProjectBadal',
         {
           expiresIn: '1h'

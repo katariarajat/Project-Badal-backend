@@ -14,6 +14,7 @@ type Organisation{
     created_at: String      
     updated_at: String
     deleted_at: String
+    type: ORGTYPE!
 }
 
 input OrganisationInput{
@@ -27,6 +28,7 @@ input OrganisationInput{
     created_at: String      
     updated_at: String
     deleted_at: String
+    type: ORGTYPE!
 }
 
 type Module{
@@ -55,6 +57,7 @@ type User {
     updated_at: String
     deleted_at: String
     organisationId: String
+    iscore : String
 }
 
 input UserInput{
@@ -69,6 +72,7 @@ input UserInput{
     updated_at: String
     deleted_at: String
     organisationId: String
+    iscore : String
 }
 
 type Project{
@@ -115,7 +119,15 @@ type Team{
     ModuleId:[String]
     participants : [String]
     taskMeta : [String]
-    organisation : String
+    organisationId : String
+}
+
+type TeamInput{
+    name: String
+    ModuleId:[String]
+    participants : [String]
+    taskMeta : [String]
+    organisationId : String
 }
 
 type Feature{
@@ -148,20 +160,23 @@ type Task{
     name: String
     brief: String
     assigned_to: String
-    FeatureId:String
+    ModuleId:String
     created_at: String
     updated_at: String
     participantsId:[String]
+    status: String
 }
 
 input TaskInput{
     name: String
     brief: String
     assigned_to: String
-    FeatureId:String
+    ModuleId:String
     created_at: String
     updated_at: String
     participantsId:[String]
+    status: String
+
 }
 type AuthData{
     userId: ID!
@@ -172,7 +187,13 @@ type AuthData{
 enum USERCHARTYPE {
     IIITH
     NGO
-    ORG
+    COMP
+}
+
+enum ORGTYPE {
+    ADMIN
+    NGO
+    COMP
 }
 
 type RootQuery {
@@ -182,6 +203,9 @@ type RootQuery {
     GetAllProjects : [Project!]!
     MyProjects(NGOId : String!) : [Project]!
     GetModuleForProjectById(projectId: String!) : [Module]!
+    UpdateStatusOfTask(TaskId: String!,status : String!) : Task!
+    GetNgo : [Organisation!]!
+    GetCompany : [Organisation!]!  
 }
 
 type RootMutation {
@@ -191,6 +215,8 @@ type RootMutation {
     UpdateStatusOfProject(projectId: String!, status: String!): Project!
     AddModuleToProjectById(moduleInput : ModuleInput) : Module
     UpdateModuleStatus(status: String!,moduleId: String!) : Module!
+    AddTaskToModuleById(taskInput: TaskInput) : Task!
+    GetTaskForModuleById(moduleId: String!) : [Task!]!
 }
 
 schema {
