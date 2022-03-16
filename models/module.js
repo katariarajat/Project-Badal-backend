@@ -28,6 +28,13 @@ const eventSchema = new Schema({
     deleted_at:{
         type:Date,
     },
+    api_build:[
+        {
+            type: String,
+        }
+    ],
+    ui_screen : [String],
+    db_tables : [String],
     assigned_to:{
         type : Schema.Types.ObjectId,
         ref: 'Team'
