@@ -15,7 +15,7 @@ const eventSchema = new Schema({
     participants : [
             {
                 type: Schema.Types.ObjectId,
-                ref: 'Participants'
+                ref: 'User'
             }
     ],
     taskMeta : [

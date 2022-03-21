@@ -14,21 +14,18 @@ type Organisation{
     created_at: String      
     updated_at: String
     deleted_at: String
-    type: ORGTYPE!
+    type: String
 }
 
 input OrganisationInput{
-    name: String
+    name: String!
     address: String
     pincode: String
-    contact: String
+    contact: String!
     size: String    
     company_description: String
     urlWebsite : String
-    created_at: String      
-    updated_at: String
-    deleted_at: String
-    type: ORGTYPE!
+    type: String!
 }
 
 type Module{
@@ -52,7 +49,7 @@ type User {
     contact:String
     address: String
     pincode: String
-    type:USERCHARTYPE
+    type: String
     created_at: String 
     updated_at: String
     deleted_at: String
@@ -62,17 +59,14 @@ type User {
 
 input UserInput{
     email: String!
-    password: String
-    name: String
-    contact:String
+    password: String!
+    name: String!
+    contact:String!
     address: String
     pincode: String
-    type:USERCHARTYPE
-    created_at: String 
-    updated_at: String
-    deleted_at: String
-    organisationId: String
-    iscore : String
+    type: String!
+    organisationId: String!
+    iscore : String!
 }
 
 type Project{
@@ -95,9 +89,6 @@ input ProjectInput{
     problem_statement:String
     fileUrl:String
     domain:String
-    created_at:String
-    updated_at : String
-    deleted_at : String
     NGOId : String
     status: String
 }
@@ -108,9 +99,6 @@ input ModuleInput{
     status: String
     start_date:String
     end_date: String
-    created_at: String
-    updated_at:String
-    deleted_at: String
     assigned_to: String
 }
 
@@ -128,21 +116,6 @@ type TeamInput{
     participants : [String]
     taskMeta : [String]
     organisationId : String
-}
-
-type Feature{
-    name: String
-    meta: String
-    brief: String
-    status: String
-    created_at: String
-    updated_at: String
-    assigned_at: String
-    component: String
-    startDate: String
-    endDate: String
-    assigned_to : String
-    modules: String
 }
 
 type Solution{
@@ -172,28 +145,14 @@ input TaskInput{
     brief: String
     assigned_to: String
     ModuleId:String
-    created_at: String
-    updated_at: String
     participantsId:[String]
     status: String
-
 }
+
 type AuthData{
     userId: ID!
     token: String!
     tokenExpiration: Int!
-}
-
-enum USERCHARTYPE {
-    IIITH
-    NGO
-    COMP
-}
-
-enum ORGTYPE {
-    ADMIN
-    NGO
-    COMP
 }
 
 type RootQuery {
@@ -215,8 +174,10 @@ type RootMutation {
     UpdateStatusOfProject(projectId: String!, status: String!): Project!
     AddModuleToProjectById(moduleInput : ModuleInput) : Module
     UpdateModuleStatus(status: String!,moduleId: String!) : Module!
-    AddTaskToModuleById(taskInput: TaskInput) : Task!
+    AddfTaskToModuleById(taskInput: TaskInput) : Task!
     GetTaskForModuleById(moduleId: String!) : [Task!]!
+    ShowTeams(organisationId : String): [Team!]!
+    AddUserToTeam(userIds : [String], teamId : String) : Team!
 }
 
 schema {

@@ -2,7 +2,7 @@ const Team = require("../../models/team");
 const user = require("../../models/user");
 
 module.exports = {
-    createTeam: async function(req, args){
+    createTeam: async function(parent, args, context){
         try{
             const team = await Team.findOne({name: args.teaminput.name});
             if(team){
@@ -32,9 +32,9 @@ module.exports = {
         }
     },
 
-    ShowTeams: async () => {
+    ShowTeams: async (args) => {
         try{
-            const Allteams = await Team.find({});
+            const Allteams = await Team.find({organisationId : args.organisationId});
             if(!Allteams)
             {
                 throw new Error('No Team Added');
@@ -48,7 +48,17 @@ module.exports = {
             throw err;
         }
     },
-    AddUserToTeam: async () =>{
-        
+    
+    AddUserToTeam: async (args) =>{
+        const team = await Team.findOne({_id : args.teamId});
+        for(let i = 0;i<args.userId.length;i++)
+        {
+            team.participants.push(args.userId[i]);
+        }
+        const result = await team.save();
+        return {
+            ...result._doc,
+            _id: result.id
+        };
     }   
 }
