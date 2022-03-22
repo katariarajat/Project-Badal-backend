@@ -39,7 +39,7 @@ async function Initialize(){
         }    
         const hashedPassword = await bcrypt.hash("ADMIN", 12);
         const isuser = await User.findOne({email : "ADMIN"});
-        // console.log(isuser);
+        // console.log(isuser); 
         if(!isuser)
         {
             const user = new User({
