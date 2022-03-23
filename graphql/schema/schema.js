@@ -1,5 +1,9 @@
 const { buildSchema } = require('graphql');
 
+/*
+    Type of organisation 
+    NGO,IIITH,COMP
+*/
 var schema = buildSchema(`
 
 type Organisation{
@@ -14,7 +18,7 @@ type Organisation{
     created_at: String      
     updated_at: String
     deleted_at: String
-    type: String
+    type: String! 
 }
 
 input OrganisationInput{
@@ -39,6 +43,17 @@ type Module{
     updated_at:String
     deleted_at: String
     assigned_to: String
+    skill : [String!]!
+}
+
+input ModuleInput{
+    projectId: String!
+    description: String
+    status: String
+    start_date:String
+    end_date: String
+    assigned_to: String
+    skill : [String!]!
 }
 
 type User {
@@ -93,14 +108,7 @@ input ProjectInput{
     status: String
 }
 
-input ModuleInput{
-    projectId: String!
-    description: String
-    status: String
-    start_date:String
-    end_date: String
-    assigned_to: String
-}
+
 
 type Team{
     name: String
@@ -156,15 +164,17 @@ type AuthData{
 }
 
 type RootQuery {
-    organisations : [Organisation!]
+    GetAllOrganisations : [Organisation!]
     login(email: String!, password: String!) : AuthData
-    ShowTeams : [Team!]!
+    ShowAllTeams : [Team!]!
     GetAllProjects : [Project!]!
     MyProjects(NGOId : String!) : [Project]!
     GetModuleForProjectById(projectId: String!) : [Module]!
-    UpdateStatusOfTask(TaskId: String!,status : String!) : Task!
     GetNgo : [Organisation!]!
     GetCompany : [Organisation!]!  
+    ShowTeamsForCompany(organisationId : String): [Team!]!
+    GetTaskForModuleById(moduleId: String!) : [Task!]!
+    GetProjectsForCompanies(companiesId : String!) : [Project]
 }
 
 type RootMutation {
@@ -174,10 +184,12 @@ type RootMutation {
     UpdateStatusOfProject(projectId: String!, status: String!): Project!
     AddModuleToProjectById(moduleInput : ModuleInput) : Module
     UpdateModuleStatus(status: String!,moduleId: String!) : Module!
-    AddfTaskToModuleById(taskInput: TaskInput) : Task!
-    GetTaskForModuleById(moduleId: String!) : [Task!]!
-    ShowTeams(organisationId : String): [Team!]!
+    AddTaskToModuleById(taskInput: TaskInput) : Task!
     AddUserToTeam(userIds : [String], teamId : String) : Team!
+    UpdateStatusOfTask(TaskId: String!,status : String!) : Task!
+    AddEmployeeToCompany(employeeId: String!,companyId: String!) : User!
+    RemoveEmployeeFromCompany(employeeId: String!) : User!
+    AssignModuleToTeam(teamId: String!, moduleId: String!, projectId: String!, organisationId: String!) : Team!
 }
 
 schema {

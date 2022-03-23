@@ -33,6 +33,9 @@ const eventSchema = new Schema({
             type: String,
         }
     ],
+    skill : {
+        
+    },
     ui_screen : [String],
     db_tables : [String],
     assigned_to:{

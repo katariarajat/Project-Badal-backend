@@ -1,4 +1,5 @@
-const Module = require('../../models/module')
+const Module = require('../../models/module');
+const team = require('../../models/team');
 
 module.exports = {
     AddModuleToProjectById : async (args) => {
@@ -44,4 +45,5 @@ module.exports = {
         }
         
     },
+    
 }

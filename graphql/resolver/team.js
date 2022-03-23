@@ -1,5 +1,6 @@
+const Project = require("../../models/project");
 const Team = require("../../models/team");
-const user = require("../../models/user");
+const User = require("../../models/user");
 
 module.exports = {
     createTeam: async function(parent, args, context){
@@ -32,7 +33,7 @@ module.exports = {
         }
     },
 
-    ShowTeams: async (args) => {
+    ShowTeamsForCompany: async (args) => {
         try{
             const Allteams = await Team.find({organisationId : args.organisationId});
             if(!Allteams)
@@ -49,6 +50,18 @@ module.exports = {
         }
     },
     
+    ShowAllTeams: async () => {
+        try{
+            const teams = await Team.find();
+            return teams.map(team => {
+                return {...team._doc,_id: team.id};
+            });
+        }
+        catch{
+            new Error("Error in ShowAllTeams");
+        }
+    },
+
     AddUserToTeam: async (args) =>{
         const team = await Team.findOne({_id : args.teamId});
         for(let i = 0;i<args.userId.length;i++)
@@ -60,5 +73,20 @@ module.exports = {
             ...result._doc,
             _id: result.id
         };
-    }   
+    },
+    AssignModuleToTeam: async (args) => {
+        const team = await Team.findOne({_id : args.teamId});
+        const project = await Project.findOne({_id: args.projectId});
+
+        project.companies.push(organisationId);
+        await project.save();
+
+        team.ModuleId.push(args.moduleId);
+        const result = await team.save();
+        return {
+            ...result._doc,
+            _id: result.id
+        };
+    },
+    
 }

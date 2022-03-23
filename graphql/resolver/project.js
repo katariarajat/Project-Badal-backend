@@ -72,7 +72,18 @@ module.exports = {
         catch{
           throw err;
         }
+      },
+      GetProjectsForCompanies: async (args) => {
+        try{
+          const Projects = await Project.find({companies : args.comapnyId});
+          return Projects.map(project => {
+            return {...project._doc,
+               _id:project.id}
+          });
+        }
+        catch{
+          throw err;
+        }
       }
-    
 }
 

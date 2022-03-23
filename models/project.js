@@ -13,6 +13,12 @@ const eventSchema = new Schema({
     deleted_at : String,
     NGOId: String,
     status: String,
+    companies :[
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Organisation'
+        }
+    ]
 });
 
 module.exports = mongoose.model('Project', eventSchema);

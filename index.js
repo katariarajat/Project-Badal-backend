@@ -61,16 +61,9 @@ async function Initialize(){
         {
             console.log("Admin user already exist created");
         }
-            
-
-
     }catch (err) {
         throw err;
       }
-
-
-
-    
 }
 
 
@@ -97,10 +90,17 @@ app.use(bodyParser.json());
 app.use(isAuth);
 
 // graphql connected
-app.use('/graphql',graphqlHttp({
-    schema: graphQlSchema,
+app.use('/graphql',graphqlHttp((req,res,graphQLParams) => {
+    return {
+        schema: graphQlSchema,
+    context: {
+        user: req.userId, 
+        auth: req.isAuth,
+    },
     rootValue: graphQlResolvers,
     graphiql: true
+    }
+    
     })
 );
 
