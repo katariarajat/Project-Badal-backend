@@ -1,8 +1,9 @@
 const req = require('express/lib/request');
 const Organisation = require('../../models/organisation');
+const { errorName} = require('../../constants');
 
 module.exports = {
-    createOrganisation: async (args,req,res) => {
+    createOrganisation: async (args,req) => {
         console.log(req);
         if(req.isAuth)
         {
@@ -35,30 +36,35 @@ module.exports = {
           }
         }
         else{
-          return {
-            Status: "false",
-            Error : "NOT AUTH"
-          }
+          throw new Error(errorName.UNAUTHORIZED)
         }
         
       },
 
-      GetAllOrganisations : async (req) => { 
-        try {
-          console.log(req);
-            const existingOrganisation = await Organisation.find({});
-            if (!existingOrganisation) {
-              throw new Error('No organisations Registered');
+      GetAllOrganisations : async (args,req) => { 
+        console.log(req);
+        if(req.isAuth)
+        {
+          try {
+            console.log(req);
+              const existingOrganisation = await Organisation.find({});
+              if (!existingOrganisation) {
+                throw new Error('No organisations Registered');
+              }
+              return existingOrganisation.map(existingOrganisation => {
+                  return {
+                  ...existingOrganisation._doc,
+                  _id: existingOrganisation.id,
+                };
+                });
+            } catch (err) {
+              throw err;
             }
-            return existingOrganisation.map(existingOrganisation => {
-                return {
-                ...existingOrganisation._doc,
-                _id: existingOrganisation.id,
-              };
-              });
-          } catch (err) {
-            throw err;
-          }
+        }
+        else
+        {
+          throw new Error(errorName.UNAUTHORIZED);
+        }
       },
       GetNgo:async () => {
         try{

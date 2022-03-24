@@ -3,6 +3,7 @@ const { Error } = require('mongoose');
 
 module.exports = (req, res, next) => {
   const authHeader = req.get('Authorization');
+  console.log(authHeader);
   if (!authHeader) {
     req.isAuth = false;
     return next();
@@ -25,5 +26,6 @@ module.exports = (req, res, next) => {
   }
   req.isAuth = true;
   req.userId = decodedToken.userId;
+  req.userType = decodedToken.userType;
   next();
 };

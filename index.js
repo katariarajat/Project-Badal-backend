@@ -29,10 +29,9 @@ async function Initialize(){
                 size: "",    
                 company_description: "",
                 urlWebsite : "https://iiit.ac.in",
-                created_at: new Date().toString(),      
-                updated_at: new Date().toString(),
+                created_at: new Date(),      
+                updated_at: new Date(),
                 deleted_at: null,
-                type: "IIITH",
             });
             
             result = await organisation.save();
@@ -50,8 +49,9 @@ async function Initialize(){
                 address: "IIIT Hyderabad",
                 pincode: "500032",
                 type: "IIIT",
-                created_at: new Date().toString(),
-                organisationId: result.id,
+                created_at: new Date(),
+                orgId: result.id,
+                ngoId: null,
                 iscore: "YES",
             });
             const resultuser = await user.save();
@@ -89,6 +89,16 @@ app.use(bodyParser.json());
 // auth check
 app.use(isAuth);
 
+// -------------
+// Find error
+const {errorType, errorName} = require('./constants');
+const getErrorCode = errorName => {
+    // console.log(errorType[errorName]);
+    return errorType[errorName];
+}
+// -------------
+
+
 // graphql connected
 app.use('/graphql',graphqlHttp((req,res,graphQLParams) => {
     return {
@@ -98,9 +108,13 @@ app.use('/graphql',graphqlHttp((req,res,graphQLParams) => {
         auth: req.isAuth,
     },
     rootValue: graphQlResolvers,
-    graphiql: true
+    graphiql: true,
+    formatError : (err) => {
+        
+        const error = getErrorCode(err.message);
+        console.log(error);
+        return ({message : error.message,statusCode : error.statusCode});
+        }
     }
-    
     })
 );
-

@@ -6,25 +6,19 @@ const OrganisationSchema = new Schema({
     name:{
         type: String,
     },
-    email:{
-        type:String, 
-    },
     address: {
          type: String,
     },
+    phoneNumber: {
+        type: String
+    },
     pincode:{
         type : String
-    },
-    contact:{
-        type: String,
     },
     size:{
         type: String,
     },
     company_description:{
-        type: String,
-    },
-    type: {
         type: String,
     },
     urlWebsite:{
@@ -38,7 +32,13 @@ const OrganisationSchema = new Schema({
     },
     deleted_at:{
         type:Date,
-    }
+    },
+    tags : [
+        {
+            type: Schema.Types.ObjectId,
+            ref : "OrgTags"
+        }
+    ]
 });
 
 module.exports = mongoose.model('Organisation', OrganisationSchema);

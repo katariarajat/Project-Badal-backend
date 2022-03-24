@@ -3,20 +3,24 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const eventSchema = new Schema({
-    name:String,
-    brief:String,
-    problem_statement:String,
-    fileUrl:String,
-    domain:String,
-    created_at:String,
-    updated_at : String,
-    deleted_at : String,
-    NGOId: String,
+    name : String,
+    description : String,
+    problem_statement : String,
+    fileUrl : String,
+    domain : String,
+    created_at : Date,
+    updated_at : Date,
+    deleted_at : Date,
+    ngoId : {
+        type: Schema.Types.ObjectId,
+        ref: 'Ngo'
+    },
+    repoId : String,
     status: String,
-    companies :[
+    tags : [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Organisation'
+            ref: 'ProjectTags'
         }
     ]
 });

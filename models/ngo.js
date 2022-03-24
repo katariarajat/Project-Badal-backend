@@ -6,17 +6,14 @@ const NgoSchema = new Schema({
     name:{
         type: String,
     },
-    email:{
-        type:String, 
-    },
     address: {
          type: String,
     },
+    phoneNumber: {
+        type: String
+    },
     pincode:{
         type : String
-    },
-    contact:{
-        type: String,
     },
     size:{
         type: String,
@@ -35,7 +32,13 @@ const NgoSchema = new Schema({
     },
     deleted_at:{
         type:Date,
-    }
+    },
+    tags : [
+        {
+            type: Schema.Types.ObjectId,
+            ref : "OrgTags"
+        }
+    ]
 });
 
 module.exports = mongoose.model('Ngo', NgoSchema);

@@ -10,26 +10,28 @@ type Organisation{
     _id:ID
     name: String
     address: String
+    phoneNumber : String
     pincode: String
-    contact: String
     size: String    
     company_description: String
     urlWebsite : String
     created_at: String      
     updated_at: String
     deleted_at: String
-    type: String! 
+    tags : [String]
+    fstatus : String
+    error : String
 }
 
 input OrganisationInput{
     name: String!
     address: String
     pincode: String
-    contact: String!
+    phoneNumber: String
     size: String    
     company_description: String
     urlWebsite : String
-    type: String!
+    tags : [String]
 }
 
 type Module{
@@ -43,7 +45,13 @@ type Module{
     updated_at:String
     deleted_at: String
     assigned_to: String
-    skill : [String!]!
+    skills : [String]
+    ui_screen : [String]
+    api_build : [String]
+    db_tables: [String]
+    commit_id : String
+    repo : String
+    tags : [String]
 }
 
 input ModuleInput{
@@ -52,8 +60,13 @@ input ModuleInput{
     status: String
     start_date:String
     end_date: String
-    assigned_to: String
-    skill : [String!]!
+    skills : [String]
+    ui_screen : [String]
+    api_build : [String]
+    db_tables: [String]
+    commit_id : String
+    repo : String
+    tags : [String]
 }
 
 type User {
@@ -61,14 +74,15 @@ type User {
     email: String!
     password: String
     name: String
-    contact:String
+    username: String
     address: String
     pincode: String
     type: String
+    ngoId : String
+    orgId : String
     created_at: String 
     updated_at: String
     deleted_at: String
-    organisationId: String
     iscore : String
 }
 
@@ -76,43 +90,46 @@ input UserInput{
     email: String!
     password: String!
     name: String!
-    contact:String!
+    username: String
     address: String
     pincode: String
-    type: String!
-    organisationId: String!
-    iscore : String!
+    type : String!
+    ngoId : String
+    orgId: String
+    iscore : String
 }
 
 type Project{
     _id : ID
-    name:String
-    brief:String
+    name : String
+    description : String
     problem_statement:String
     fileUrl:String
     domain:String
     created_at:String
     updated_at : String
     deleted_at : String
-    NGOId : String
+    ngoId : String
+    repoId : String
     status: String
+    tags : [String]
 }
 
 input ProjectInput{
-    name:String
-    brief:String
+    name : String
+    description : String
     problem_statement:String
     fileUrl:String
     domain:String
-    NGOId : String
+    ngoId : String
+    repoId : String
     status: String
+    tags : [String]
 }
-
-
 
 type Team{
     name: String
-    ModuleId:[String]
+    ModuleTeamAssign:[String]
     participants : [String]
     taskMeta : [String]
     organisationId : String
@@ -120,40 +137,35 @@ type Team{
 
 type TeamInput{
     name: String
-    ModuleId:[String]
+    ModuleTeamAssign:[String]
     participants : [String]
     taskMeta : [String]
     organisationId : String
 }
 
 type Solution{
-    module_id:[String],
-    feature_id:[String],
+    moduleTeamAssign:[String],
     projectId:[String],
     organisation: String
     created_at: String
     updated_at: String
-    Teams:[String]
+    Teams: String
 }
 
 type Task{
     _id:ID
-    name: String
-    brief: String
-    assigned_to: String
-    ModuleId:String
+    name : String
+    description : String
+    ModuleId : String
     created_at: String
     updated_at: String
-    participantsId:[String]
     status: String
 }
 
 input TaskInput{
-    name: String
-    brief: String
-    assigned_to: String
-    ModuleId:String
-    participantsId:[String]
+    name : String
+    description : String
+    ModuleId : String
     status: String
 }
 
@@ -164,7 +176,7 @@ type AuthData{
 }
 
 type RootQuery {
-    GetAllOrganisations : [Organisation!]
+    GetAllOrganisations : [Organisation]
     login(email: String!, password: String!) : AuthData
     ShowAllTeams : [Team!]!
     GetAllProjects : [Project!]!

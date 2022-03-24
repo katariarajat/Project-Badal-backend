@@ -6,11 +6,13 @@ const eventSchema = new Schema({
     name:{
         type:String,
     },
-    brief:{
+    description :{
         type: String,
     },
-    assigned_to: String,
-    ModuleId: String,
+    ModuleId: {
+        type: Schema.Types.ObjectId,
+        ref : "Module"
+    },
     created_at: String,
     updated_at:String,
     status: String,

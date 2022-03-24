@@ -6,10 +6,10 @@ const eventSchema = new Schema({
     name:{
         type: String,
     },
-    ModuleId:[
+    ModuleTeamAssign:[
         {
         type: Schema.Types.ObjectId,
-        ref: 'Module'
+        ref: 'ModuleTeam'
         }
     ],
     participants : [
@@ -21,7 +21,7 @@ const eventSchema = new Schema({
     taskMeta : [
         {
             type : Schema.Types.ObjectId,
-            ref: 'TaskMeta'
+            ref: 'SkillTags'
         }
     ],
     organisationId : {

@@ -33,15 +33,27 @@ const eventSchema = new Schema({
             type: String,
         }
     ],
-    skill : {
-        
-    },
+    skills : [
+        {
+            type : Schema.Types.ObjectId,
+            ref: 'SkillTags'
+        }
+    ],
     ui_screen : [String],
     db_tables : [String],
     assigned_to:{
         type : Schema.Types.ObjectId,
-        ref: 'Team'
-    }
+        ref: 'ModuleTeam'
+    },
+    commit_id : String,
+    repo : String,
+    tags : [
+        {
+        type : Schema.Types.ObjectId,
+        ref: 'ModuleTags'
+        }   
+    ]
+        
 });
 
-module.exports = mongoose.model('Event', eventSchema);
+module.exports = mongoose.model('Module', eventSchema);

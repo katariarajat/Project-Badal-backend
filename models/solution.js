@@ -3,24 +3,17 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const eventSchema = new Schema({
-    module_id:[
-        {
+    moduleTeamAssign: {
             types: Schema.Types.ObjectId,
-            ref: 'Module'
+            ref: 'ModuleTeam'
         }
-    ],
-    feature_id:[
-        {
-        types: Schema.Types.ObjectId,
-        ref: 'Feature'
-        }
-    ],
-    projectId:[
+    ,
+    projectId:
         {
             types: Schema.Types.ObjectId,
             ref: 'Project'
         }
-    ],
+    ,
     organisation:{
         types: Schema.Types.ObjectId,
         ref: 'Organisation'
@@ -31,13 +24,10 @@ const eventSchema = new Schema({
     updated_at:{
         type:Date,
     },
-    Teams:[
-        {
+    Teams: {
             types: Schema.Types.ObjectId,
             ref: 'Team'
         }
-    ]
-    
 });
 
-module.exports = mongoose.model('Solution', eventSchema);
+module.exports = mongoose.model('Module_Team_Solution', eventSchema);
