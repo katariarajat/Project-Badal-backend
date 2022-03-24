@@ -9,15 +9,19 @@ module.exports = (req, res, next) => {
     return next();
   }
   const token = authHeader.split(' ')[1];
+  
   if (!token || token === '') {
     req.isAuth = false;
     return next();
   }
   let decodedToken;
   try {
-    decodedToken = jwt.verify(token, 'somesupersecretkey');
+    decodedToken = jwt.verify(token, 'ProjectBadal');
+    // console.log(decodedToken);
   } catch (err) {
     req.isAuth = false;
+    // console.log('hello');
+
     return next();
   }
   if (!decodedToken) {
@@ -27,5 +31,6 @@ module.exports = (req, res, next) => {
   req.isAuth = true;
   req.userId = decodedToken.userId;
   req.userType = decodedToken.userType;
+  req.orgId = decodedToken.orgId;
   next();
 };

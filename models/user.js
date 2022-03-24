@@ -9,7 +9,7 @@ const userschema = new Schema({
     username : String,
     address: String,
     pincode: String,
-    type: {type: String, enum: ["NGO", "ORG","IIIT"]} ,
+    type: {type: String, enum: ["NGO", "ORG","IIITH"]} ,
     ngoId : {
         type: Schema.Types.ObjectId,
         ref: 'Ngo'

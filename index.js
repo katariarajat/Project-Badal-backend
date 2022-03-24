@@ -48,7 +48,7 @@ async function Initialize(){
                 contact: "",
                 address: "IIIT Hyderabad",
                 pincode: "500032",
-                type: "IIIT",
+                type: "IIITH",
                 created_at: new Date(),
                 orgId: result.id,
                 ngoId: null,
@@ -93,7 +93,7 @@ app.use(isAuth);
 // Find error
 const {errorType, errorName} = require('./constants');
 const getErrorCode = errorName => {
-    // console.log(errorType[errorName]);
+    console.log(errorType[errorName]);
     return errorType[errorName];
 }
 // -------------
@@ -104,8 +104,9 @@ app.use('/graphql',graphqlHttp((req,res,graphQLParams) => {
     return {
         schema: graphQlSchema,
     context: {
-        user: req.userId, 
-        auth: req.isAuth,
+        userId: req.userId, 
+        isAuth: req.isAuth,
+        userType : req.userType,
     },
     rootValue: graphQlResolvers,
     graphiql: true,

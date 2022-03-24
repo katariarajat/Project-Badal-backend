@@ -1,24 +1,29 @@
 const Project = require("../../models/project");
 const Team = require("../../models/team");
 const User = require("../../models/user");
+const {errorName, usertype} = require('../../constants');
+const req = require("express/lib/request");
+const ModuleTeam = require('../../models/moduleTeam');
 
 module.exports = {
-    createTeam: async function(parent, args, context){
+    createTeam: async (args, req) => {
+        if(!req.isAuth)
+        {
+            throw new Error(errorName.UNAUTHORIZED);
+        }
         try{
             const team = await Team.findOne({name: args.teaminput.name});
             if(team){
-                throw new Error('Team Name already exists');
+                throw new Error(errorName.ALREADY_EXIST);
             }
             else 
             {
-                const user = await user.findOne({_id : req.userId});
-
                 const newteam= new Team({
                     name: args.teaminput.name,
-                    ModuleId: null,
-                    participants : [req.userId],
+                    ModuleTeamAssign: null,
+                    participants : args.teaminput.participants,
                     taskMeta: args.teaminput.taskMeta,
-                    organisation: user.organisationId, 
+                    organisation: req.orgId, 
                 });
 
                 newteam.save().then(result => {
@@ -34,12 +39,12 @@ module.exports = {
     },
 
     ShowTeamsForCompany: async (args) => {
+        if(!req.isAuth)
+        {
+            throw new Error(errorName.UNAUTHORIZED);
+        }
         try{
-            const Allteams = await Team.find({organisationId : args.organisationId});
-            if(!Allteams)
-            {
-                throw new Error('No Team Added');
-            }
+            const Allteams = await Team.find({organisationId : req.orgId});
             return Allteams.map(team => {
                 return {...team._doc,
                     _id: team.id}
@@ -50,7 +55,15 @@ module.exports = {
         }
     },
     
-    ShowAllTeams: async () => {
+    ShowAllTeams: async (args,req) => {
+        if(!req.isAuth)
+        {
+            throw new Error(errorName.UNAUTHORIZED);
+        }
+        if(req.userType != usertype.IIITH)
+        {
+            throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
+        }
         try{
             const teams = await Team.find();
             return teams.map(team => {
@@ -58,34 +71,53 @@ module.exports = {
             });
         }
         catch{
-            new Error("Error in ShowAllTeams");
+            throw err;
         }
     },
 
-    AddUserToTeam: async (args) =>{
-        const team = await Team.findOne({_id : args.teamId});
-        for(let i = 0;i<args.userId.length;i++)
+    AddUserToTeam: async (args,req) =>{
+        if(!req.isAuth)
         {
-            team.participants.push(args.userId[i]);
+            throw new Error(errorName.UNAUTHORIZED);
         }
-        const result = await team.save();
-        return {
-            ...result._doc,
-            _id: result.id
-        };
+        try{
+            const team = await Team.findOne({_id : args.teamId});
+            for(let i = 0;i<args.userId.length;i++)
+            {
+                team.participants.push(args.userId[i]);
+            }
+            const result = await team.save();
+            return {
+                ...result._doc,
+                _id: result.id
+            };
+        }
+        catch {
+            throw err;
+        }
+        
     },
-    AssignModuleToTeam: async (args) => {
-        const team = await Team.findOne({_id : args.teamId});
-        const project = await Project.findOne({_id: args.projectId});
 
-        project.companies.push(organisationId);
-        await project.save();
+    AssignModuleToTeam: async (args,req) => {
+        
+        if(!req.isAuth)
+        {
+            throw new Error(errorName.UNAUTHORIZED);
+        }
 
-        team.ModuleId.push(args.moduleId);
-        const result = await team.save();
+        const moduleTeam = new ModuleTeam({
+            moduleId : args.moduleId,
+            Team : args.teamId,
+            Status : "0",
+            projectId : args.projectId,
+            orgId : req.orgId,
+        });
+        
+        const resultModuleTeam = await moduleTeam.save();
+
         return {
-            ...result._doc,
-            _id: result.id
+            ...resultModuleTeam._doc,
+            _id: resultModuleTeam.id
         };
     },
     

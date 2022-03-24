@@ -46,8 +46,17 @@ module.exports = {
       if (!isEqual) {
         throw new Error(errorName.USER_DO_NOT_EXISTS);
       }
+      let orgid;
+      if(user.type == "ORG")
+      {
+        orgid= user.orgId;
+      }
+      else 
+      {
+        orgid=user.ngoId;
+      }
       const token = jwt.sign(
-        {userId: user.id, email: user.email, userType: user.type },
+        {userId: user.id, email: user.email, userType: user.type, orgId : orgid },
         'ProjectBadal',
         {
           expiresIn: '1h'

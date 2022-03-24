@@ -1,31 +1,35 @@
-const req = require('express/lib/request');
 const Organisation = require('../../models/organisation');
-const { errorName} = require('../../constants');
+const { errorName, usertype, errorType} = require('../../constants');
+const Ngo = require('../../models/ngo');
 
 module.exports = {
     createOrganisation: async (args,req) => {
-        console.log(req);
-        if(req.isAuth)
-        {
+      if(!req.isAuth)
+      {
+        throw new Error(errorName.UNAUTHORIZED);
+      }
+      if(req.userType != usertype.IIITH)
+      {
+        throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
+      }
           try {
             const existingOrganisation = await Organisation.findOne({name: args.organisationinput.name});
             if (existingOrganisation) {
-              throw new Error('Organisation exists already.');
+              throw new Error(errorType.ORG_ALREADY_EXISTS);
             }
             
             const organisation = new Organisation({
-              email: args.organisationinput.email,
               name: args.organisationinput.name,
               address: args.organisationinput.address,
+              phoneNumber: args.organisationinput.address,
               pincode: args.organisationinput.pincode,
-              contact: args.organisationinput.contact,
               size: args.organisationinput.size,    
               company_description: args.organisationinput.company_description,
               urlWebsite : args.organisationinput.urlWebsite,
-              created_at: new Date().toString(),      
-              updated_at: new Date().toString(),
+              created_at: new Date(),      
+              updated_at: new Date(),
               deleted_at: null,
-              type: args.organisationinput.type,
+              tags : args.organisationinput.tags, 
             });
       
             const result = await organisation.save();
@@ -34,30 +38,32 @@ module.exports = {
           } catch (err) {
             throw err;
           }
-        }
-        else{
-          throw new Error(errorName.UNAUTHORIZED)
-        }
-        
       },
 
       GetAllOrganisations : async (args,req) => { 
-        console.log(req);
+        
         if(req.isAuth)
         {
+          if(req.userType != 'IIITH')
+          {
+            throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
+          }
           try {
-            console.log(req);
-              const existingOrganisation = await Organisation.find({});
-              if (!existingOrganisation) {
-                throw new Error('No organisations Registered');
+            // console.log(req);
+              let existingOrganisation = await Organisation.find({});
+              let existingNgo = await Ngo.find({});
+              if (!existingOrganisation || !existingNgo) {
+                throw new Error(errorName.MONGO_ACCESS_ERROR);
               }
+              existingOrganisation = existingOrganisation.concat(existingNgo);
               return existingOrganisation.map(existingOrganisation => {
                   return {
                   ...existingOrganisation._doc,
                   _id: existingOrganisation.id,
                 };
                 });
-            } catch (err) {
+            } 
+            catch (err) {
               throw err;
             }
         }
@@ -66,20 +72,40 @@ module.exports = {
           throw new Error(errorName.UNAUTHORIZED);
         }
       },
-      GetNgo:async () => {
+
+      GetNgo : async (args,req) => {
+        console.log(req);
+        if(!req.isAuth)
+        {
+          throw new Error(errorName.UNAUTHORIZED);
+        }
+        if(req.userType != usertype.IIITH)
+        {
+          throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
+        }
         try{
-          const ngo = await Organisation.find({type : "NGO"});
-          return Organisation.map(organisation => {
-            return {...organisation._doc,_id : organisation.id};
+          
+          const ngo = await Ngo.find();
+          return ngo.map(ngo => {
+            return {...ngo._doc,_id : ngo.id};
           });
         }
         catch{
           throw err;
         }
       },
+
       GetCompany : async () => {
+        if(!req.isAuth)
+        {
+          throw new Error(errorName.UNAUTHORIZED);
+        }
+        if(req.userType != usertype.IIITH)
+        {
+          throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
+        }
         try{
-          const company= await Organisation.find({type: "COMP"});
+          const company= await Organisation.find();
           return company.map(company => {
             return {...company._doc,_id:company.id};
           });

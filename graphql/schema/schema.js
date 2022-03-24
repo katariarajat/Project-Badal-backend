@@ -19,8 +19,6 @@ type Organisation{
     updated_at: String
     deleted_at: String
     tags : [String]
-    fstatus : String
-    error : String
 }
 
 input OrganisationInput{
@@ -140,7 +138,6 @@ type TeamInput{
     ModuleTeamAssign:[String]
     participants : [String]
     taskMeta : [String]
-    organisationId : String
 }
 
 type Solution{
@@ -202,6 +199,19 @@ type RootMutation {
     AddEmployeeToCompany(employeeId: String!,companyId: String!) : User!
     RemoveEmployeeFromCompany(employeeId: String!) : User!
     AssignModuleToTeam(teamId: String!, moduleId: String!, projectId: String!, organisationId: String!) : Team!
+}
+
+type ModuleTeam {
+    moduleId: Module
+    teamId : Team
+    Status : String
+    projectId : Project
+    orgId : Organisation
+}
+
+input ModuleTeam{
+    moduleId : String
+    teamId : String
 }
 
 schema {

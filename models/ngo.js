@@ -38,7 +38,7 @@ const NgoSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref : "OrgTags"
         }
-    ]
+    ],
 });
 
 module.exports = mongoose.model('Ngo', NgoSchema);

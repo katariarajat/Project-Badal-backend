@@ -6,12 +6,6 @@ const eventSchema = new Schema({
     name:{
         type: String,
     },
-    ModuleTeamAssign:[
-        {
-        type: Schema.Types.ObjectId,
-        ref: 'ModuleTeam'
-        }
-    ],
     participants : [
             {
                 type: Schema.Types.ObjectId,
