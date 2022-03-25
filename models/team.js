@@ -18,7 +18,7 @@ const eventSchema = new Schema({
             ref: 'SkillTags'
         }
     ],
-    organisationId : {
+    organisation : {
         type : Schema.Types.ObjectId,
         ref: 'Organisation'
     }

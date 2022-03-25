@@ -11,44 +11,37 @@ module.exports = {
         {
             throw new Error(errorName.UNAUTHORIZED);
         }
-        try{
-            const team = await Team.findOne({name: args.teaminput.name});
-            if(team){
-                throw new Error(errorName.ALREADY_EXIST);
-            }
-            else 
-            {
-                const newteam= new Team({
-                    name: args.teaminput.name,
-                    ModuleTeamAssign: null,
-                    participants : args.teaminput.participants,
-                    taskMeta: args.teaminput.taskMeta,
-                    organisation: req.orgId, 
-                });
-
-                newteam.save().then(result => {
-                    return {...result._doc,_id: result.id};
-                }).catch(err => {
-                    throw err;
-                });
-            }
+        const team = await Team.findOne({name: args.teaminput.name});
+        console.log(req.orgId);
+        if(team){
+            throw new Error(errorName.ALREADY_EXIST);
         }
-        catch{
-            throw err;
+        else 
+        {
+            const newteam= new Team({
+                name: args.teaminput.name,
+                participants : args.teaminput.participants,
+                taskMeta: args.teaminput.taskMeta,
+                organisation: req.orgId,
+            });
+            const result = await newteam.save();
+            return {...result._doc,_id: result.id};
         }
+        
+        
     },
 
-    ShowTeamsForCompany: async (args) => {
+    ShowTeamsForCompany: async (args,req) => {
         if(!req.isAuth)
         {
             throw new Error(errorName.UNAUTHORIZED);
         }
         try{
-            const Allteams = await Team.find({organisationId : req.orgId});
+            const Allteams = await Team.find({organisation : req.orgId}).populate('organisation');
             return Allteams.map(team => {
                 return {...team._doc,
                     _id: team.id}
-            })
+            });
         }
         catch{
             throw err;

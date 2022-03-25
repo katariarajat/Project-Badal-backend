@@ -127,15 +127,20 @@ input ProjectInput{
 
 type Team{
     name: String
-    ModuleTeamAssign:[String]
     participants : [String]
     taskMeta : [String]
-    organisationId : String
+    organisation : String
 }
 
-type TeamInput{
+type returnTeam{
     name: String
-    ModuleTeamAssign:[String]
+    participants : [String]
+    taskMeta : [String]
+    organisation : Organisation
+}
+
+input TeamInput{
+    name: String
     participants : [String]
     taskMeta : [String]
 }
@@ -175,13 +180,13 @@ type AuthData{
 type RootQuery {
     GetAllOrganisations : [Organisation]
     login(email: String!, password: String!) : AuthData
-    ShowAllTeams : [Team!]!
+    ShowAllTeams : [returnTeam!]!
     GetAllProjects : [Project!]!
     MyProjects(NGOId : String!) : [Project]!
     GetModuleForProjectById(projectId: String!) : [Module]!
     GetNgo : [Organisation!]!
     GetCompany : [Organisation!]!  
-    ShowTeamsForCompany(organisationId : String): [Team!]!
+    ShowTeamsForCompany(organisationId : String): [returnTeam!]!
     GetTaskForModuleById(moduleId: String!) : [Task!]!
     GetProjectsForCompanies(companiesId : String!) : [Project]
 }
@@ -189,7 +194,9 @@ type RootQuery {
 type RootMutation {
     createUser(userinput: UserInput): User!
     createOrganisation(organisationinput: OrganisationInput): Organisation!
+    createNgo(organisationinput: OrganisationInput): Organisation!
     CreateProject(projectinput: ProjectInput) : Project!
+    createTeam(teaminput : TeamInput) : Team!
     UpdateStatusOfProject(projectId: String!, status: String!): Project!
     AddModuleToProjectById(moduleInput : ModuleInput) : Module
     UpdateModuleStatus(status: String!,moduleId: String!) : Module!
@@ -209,7 +216,7 @@ type ModuleTeam {
     orgId : Organisation
 }
 
-input ModuleTeam{
+input ModuleTeaminput{
     moduleId : String
     teamId : String
 }

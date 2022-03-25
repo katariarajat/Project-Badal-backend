@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const {errorName} = require('../../constants');
+const {errorName,usertype} = require('../../constants');
 
 const User = require('../../models/user');
 const Organisation = require('../../models/organisation');
@@ -47,14 +47,15 @@ module.exports = {
         throw new Error(errorName.USER_DO_NOT_EXISTS);
       }
       let orgid;
-      if(user.type == "ORG")
+      if(user.type == usertype.IIITH || user.type == usertype.COMP)
       {
-        orgid= user.orgId;
+        orgid = user.orgId;
       }
       else 
       {
-        orgid=user.ngoId;
+        orgid = user.ngoId;
       }
+      console.log(orgid);
       const token = jwt.sign(
         {userId: user.id, email: user.email, userType: user.type, orgId : orgid },
         'ProjectBadal',

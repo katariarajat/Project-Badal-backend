@@ -93,6 +93,7 @@ app.use(isAuth);
 // Find error
 const {errorType, errorName} = require('./constants');
 const getErrorCode = errorName => {
+    console.log(errorName);
     console.log(errorType[errorName]);
     return errorType[errorName];
 }
@@ -107,14 +108,22 @@ app.use('/graphql',graphqlHttp((req,res,graphQLParams) => {
         userId: req.userId, 
         isAuth: req.isAuth,
         userType : req.userType,
+        orgId : req.orgId,
     },
     rootValue: graphQlResolvers,
     graphiql: true,
     formatError : (err) => {
-        
+        console.log(err);
         const error = getErrorCode(err.message);
-        console.log(error);
-        return ({message : error.message,statusCode : error.statusCode});
+        console.log("Hello ", error);
+        if(error != null)
+        {
+            return ({message : error.message,statusCode : error.statusCode});
+        }
+        else 
+        {
+            return err;
+        }
         }
     }
     })

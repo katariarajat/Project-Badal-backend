@@ -12,6 +12,15 @@ const eventSchema = new Schema({
         ref: 'Team'
     },
     Status : String,
+    projectId : {
+        type : Schema.Types.ObjectId,
+        ref: 'Project'
+    },
+    orgId : 
+    {
+        type : Schema.Types.ObjectId,
+        ref: 'Organisation'
+    }
 });
 
 module.exports = mongoose.model('ModuleTeam', eventSchema);
