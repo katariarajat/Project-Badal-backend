@@ -14,19 +14,19 @@ const eventSchema = new Schema({
         type: String,
     },
     start_date:{
-        type: Date,
+        type: String,
     },
     end_date:{
-        type: Date,
+        type: String,
     },
     created_at:{
-        type:Date,
+        type:String,
     },
     updated_at:{
-        type:Date,
+        type:String,
     },
     deleted_at:{
-        type:Date,
+        type:String,
     },
     api_build:[
         {
@@ -50,7 +50,7 @@ const eventSchema = new Schema({
     tags : [
         {
         type : Schema.Types.ObjectId,
-        ref: 'ModuleTags'
+        ref: 'SkillTags'
         }   
     ]
         

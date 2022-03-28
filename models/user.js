@@ -19,9 +19,13 @@ const userschema = new Schema({
         ref: 'Organisation'
     },
     iscore : String,
-    created_at: Date, 
-    updated_at: Date,
-    deleted_at: Date,
+    updated_at: String,
+    created_at: String, 
+    deleted_at: String,
+    skill : [{
+        type: Schema.Types.ObjectId,
+        ref: 'SkillTags'
+    }]
 });
 
 module.exports = mongoose.model('User',userschema);

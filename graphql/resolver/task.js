@@ -1,8 +1,16 @@
 const Task = require("../../models/task");
 const Module = require("../../models/module");
+const {errorName,errorType} = require("../../constants");
+const req = require("express/lib/request");
+const ModuleTeam  = require("../../models/moduleTeam");
+
 module.exports = {
-    AddTaskToModuleById: async (args) => {
-        
+    AddTaskToModuleById: async (args,req) => {
+        if(!req.isAuth)
+        {
+            throw new Error(errorName.DO_NOT_EXIST);
+        }
+
         const module=await Module.findOne({_id: args.taskInput.ModuleId});
         console.log(module);
         if(!module)
@@ -22,6 +30,10 @@ module.exports = {
         return {...result._doc,_id:result.id};
     },
     UpdateStatusOfTask: async (args) => {
+        if(!req.isAuth)
+        {
+            throw new Error(errorName.UNAUTHORIZED);
+        }
         try{
             const task=await Task.findOne({_id:args.TaskId});
             task.status=args.status;
@@ -32,6 +44,10 @@ module.exports = {
         }
     },
     GetTaskForModuleById: async (args) => {
+        if(!req.isAuth)
+        {
+            throw new Error(errorName.UNAUTHORIZED);
+        }
         try{
             const tasks=await Task.find({_id: args.moduleId});
             return tasks.map(task => {

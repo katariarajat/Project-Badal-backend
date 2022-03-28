@@ -8,9 +8,9 @@ const eventSchema = new Schema({
     problem_statement : String,
     fileUrl : String,
     domain : String,
-    created_at : Date,
-    updated_at : Date,
-    deleted_at : Date,
+    created_at : String,
+    updated_at : String,
+    deleted_at : String,
     ngoId : {
         type: Schema.Types.ObjectId,
         ref: 'Ngo'
@@ -20,7 +20,7 @@ const eventSchema = new Schema({
     tags : [
         {
             type: Schema.Types.ObjectId,
-            ref: 'ProjectTags'
+            ref: 'SkillTags'
         }
     ]
 });

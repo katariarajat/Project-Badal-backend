@@ -25,18 +25,18 @@ const OrganisationSchema = new Schema({
         type:String
     },
     created_at:{
-        type: Date,
+        type: String,
     },
     updated_at:{
-        type: Date,
+        type: String,
     },
     deleted_at:{
-        type:Date,
+        type:String,
     },
     tags : [
         {
             type: Schema.Types.ObjectId,
-            ref : "OrgTags"
+            ref : "SkillTags"
         }
     ]
 });

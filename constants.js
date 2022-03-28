@@ -7,9 +7,14 @@ exports.errorName= {
     MONGO_ACCESS_ERROR : 'MONGO_ACCESS_ERROR',
     ORG_ALREADY_EXISTS : 'ORG_ALREADY_EXISTS',
     ALREADY_EXIST : 'ALREADY_EXIST',
+    DO_NOT_EXIST : 'DO_NOT_EXIST'
 }
 
 exports.errorType={
+    DO_NOT_EXIST : {
+        message : '... DO NOT EXIST',
+        statusCode : 401
+    },
     ALREADY_EXIST : {
         message : '... ALREADY EXISTS',
         statusCode : 401

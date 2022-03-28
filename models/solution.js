@@ -19,10 +19,10 @@ const eventSchema = new Schema({
         ref: 'Organisation'
     },
     created_at:{
-        type:Date
+        type:String
     },
     updated_at:{
-        type:Date,
+        type:String,
     },
     Teams: {
             types: Schema.Types.ObjectId,

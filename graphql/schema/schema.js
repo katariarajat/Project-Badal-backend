@@ -177,6 +177,17 @@ type AuthData{
     tokenExpiration: Int!
 }
 
+type Skill{
+    _id : ID!
+    skill : String
+}
+
+input SkillInput{
+    skill : String!
+    user : Int
+    project : Int
+}
+
 type RootQuery {
     GetAllOrganisations : [Organisation]
     login(email: String!, password: String!) : AuthData
@@ -186,9 +197,11 @@ type RootQuery {
     GetModuleForProjectById(projectId: String!) : [Module]!
     GetNgo : [Organisation!]!
     GetCompany : [Organisation!]!  
-    ShowTeamsForCompany(organisationId : String): [returnTeam!]!
+    ShowTeamsForCompany : [returnTeam!]!
     GetTaskForModuleById(moduleId: String!) : [Task!]!
     GetProjectsForCompanies(companiesId : String!) : [Project]
+    GetSkillForUser : [Skill]!
+    GetSkillForProject : [Skill]!
 }
 
 type RootMutation {
@@ -206,6 +219,7 @@ type RootMutation {
     AddEmployeeToCompany(employeeId: String!,companyId: String!) : User!
     RemoveEmployeeFromCompany(employeeId: String!) : User!
     AssignModuleToTeam(teamId: String!, moduleId: String!, projectId: String!, organisationId: String!) : Team!
+    GlobalSkillAdd(skills : [SkillInput]) : [Skill]
 }
 
 type ModuleTeam {
