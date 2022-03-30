@@ -1,8 +1,19 @@
 const Module = require('../../models/module');
 const team = require('../../models/team');
+const { errorName, usertype, errorType} = require('../../constants');
+const req = require('express/lib/request');
+const ModuleTeam = require('../../models/moduleTeam');
 
 module.exports = {
-    AddModuleToProjectById : async (args) => {
+    AddModuleToProjectById : async (args,req) => {
+        if(!req.isAuth)
+        {
+          throw new Error(errorName.UNAUTHORIZED);
+        }
+        if(req.userType != usertype.IIITH)
+        {
+            throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
+        }
         try{
             const newModule= new Module({
                 projectId: args.moduleInput.projectId,
@@ -13,7 +24,9 @@ module.exports = {
                 created_at: new Date().toString(),
                 updated_at: new Date().toString(),
                 deleted_at: null,
-                assigned_to: null,
+                ui_screen : args.moduleInput.ui_screen,
+                db_tables : args.moduleInput.db_tables,
+                tags : args.moduleInput.tags,
             });
             const result = await newModule.save();
             return {...result._doc,_id:result.id};
@@ -22,7 +35,11 @@ module.exports = {
             throw err;
         }
     },
-    GetModuleForProjectById : async (args) => {
+    GetModuleForProjectById : async (args,req) => {
+        if(!req.isAuth)
+        {
+          throw new Error(errorName.UNAUTHORIZED);
+        }
         try{
             const modules = await Module.find({projectId: args.projectId});
             return modules.map(modules => {
@@ -33,12 +50,28 @@ module.exports = {
             throw err;
         }
     },
-    UpdateModuleStatus: async (args) => {
+    UpdateModuleStatus: async (args,req) => {
+        if(!req.isAuth)
+        {
+          throw new Error(errorName.UNAUTHORIZED);
+        }
         try{
-            const module = await Module.findOne({_id:args.moduleId});
-            module.status = args.status;
-            const updated = await module.save();
-            return {...updated._doc,_id:updated.id};
+            ModuleTeam.updateOne({'modules.moduleId' : args.moduleId},
+            {
+                '$set' : {
+                    'modules.$.Status' : args.status,
+                },
+                function(err,module) {
+                    if(err)
+                    {
+                        throw err;
+                    }
+                    else 
+                    {
+                        return args.status;
+                    }
+                }
+            });
         }
         catch{
             throw err;

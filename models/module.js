@@ -41,10 +41,6 @@ const eventSchema = new Schema({
     ],
     ui_screen : [String],
     db_tables : [String],
-    assigned_to:{
-        type : Schema.Types.ObjectId,
-        ref: 'ModuleTeam'
-    },
     commit_id : String,
     repo : String,
     tags : [

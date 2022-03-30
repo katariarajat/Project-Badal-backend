@@ -97,21 +97,44 @@ module.exports = {
         {
             throw new Error(errorName.UNAUTHORIZED);
         }
-
-        const moduleTeam = new ModuleTeam({
-            moduleId : args.moduleId,
-            Team : args.teamId,
-            Status : "0",
-            projectId : args.projectId,
-            orgId : req.orgId,
-        });
+        const oldModuleTeam = await ModuleTeam.findOne({orgId : req.orgId, projectId: args.projectId});
+        if(!oldModuleTeam)
+        {
+            const moduleTeam = new ModuleTeam({
+                modules : [
+                    {
+                        moduleId : args.moduleId,
+                        team : args.teamId,
+                        Status : "0"
+                    }
+                ],
+                projectId : args.projectId,
+                orgId : args.orgId,
+            }); 
+            const resultModuleTeam = await moduleTeam.save();
+            return {
+                ...resultModuleTeam._doc,
+                _id: resultModuleTeam.id
+            };
+        }
+        else 
+        {
+            const module = {
+                moduleId: args.moduleId,
+                team : args.teamId,
+                Status : "0",
+            }
+            oldModuleTeam.modules.push(module);
+            const resultModuleTeam = await oldModuleTeam.save();
+            return {
+                ...resultModuleTeam._doc,
+                _id: resultModuleTeam.id
+            };
+        }
         
-        const resultModuleTeam = await moduleTeam.save();
+        
 
-        return {
-            ...resultModuleTeam._doc,
-            _id: resultModuleTeam.id
-        };
+
     },
     
 }

@@ -1,8 +1,19 @@
+const req = require('express/lib/request');
 const Project = require('../../models/project');
-
+const {errorName, usertype} = require('../../constants');
+const Organisation = require('../../models/organisation')
+const ModuleTeam = require('../../models/moduleTeam');
 module.exports = {
-    GetAllProjects : async function(){
-        try {
+    GetAllProjects : async function(args,req){
+      if(!req.isAuth)
+      {
+          throw new Error(errorName.UNAUTHORIZED);
+      }
+      if(req.userType != usertype.IIITH)
+      {
+          throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
+      }
+      try {
             const existingprojects = await Project.find({});
             if (!existingprojects) {
               throw new Error('No Project Added');
@@ -18,7 +29,11 @@ module.exports = {
           }
     },
 
-    CreateProject: async args => {
+    CreateProject: async (args,req) => {
+      if(!req.isAuth)
+      {
+        throw new Error(errorName.UNAUTHORIZED);
+      }
         try {
           const project = new Project({
             name : args.projectinput.name,
@@ -29,8 +44,9 @@ module.exports = {
             created_at:new Date().toString(),
             updated_at : new Date().toString(),
             deleted_at : null,
-            NGOId: args.projectinput.NGOId,
+            NGOId: req.orgId,
             status:args.projectinput.status,
+            tags : args.projectinput.tags,
           });
     
           const result = await project.save();
@@ -40,7 +56,15 @@ module.exports = {
           throw err;
         }
       },
-      UpdateStatusOfProject: async (args) =>{
+      UpdateStatusOfProject: async (args,req) =>{
+        if(!req.isAuth)
+        {
+          throw new Error(errorName.UNAUTHORIZED);
+        }
+        if(!(args.projectId == req.orgId || req.userType == usertype.IIITH))
+        {
+          throw new Error("Project Does not belong to you.");
+        }
         try
         {
           const project = await Project.findOne({_id:args.projectId});
@@ -62,9 +86,13 @@ module.exports = {
         }
         
       },
-      MyProjects: async (args)=> {
+      MyProjects: async (args,req)=> {
+        if(!req.isAuth)
+        {
+          throw new Error(errorName.UNAUTHORIZED);
+        }
         try{
-          const NgoProjects=await Project.find({NGOId:args.NGOId});
+          const NgoProjects=await Project.find({NGOId:req.orgId});
         return NgoProjects.map(NgoProjects => {
           return {...NgoProjects._doc,_id:NgoProjects.id};
         });
@@ -73,9 +101,13 @@ module.exports = {
           throw err;
         }
       },
-      GetProjectsForCompanies: async (args) => {
+      GetProjectsForCompanies: async (args,req) => {
+        if(!req.isAuth)
+        {
+          throw new Error(errorName.UNAUTHORIZED);
+        }
         try{
-          const Projects = await Project.find({companies : args.comapnyId});
+          const Projects = await ModuleTeam.find({orgId: args.orgId});
           return Projects.map(project => {
             return {...project._doc,
                _id:project.id}

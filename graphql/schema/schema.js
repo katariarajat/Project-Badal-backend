@@ -193,7 +193,7 @@ type RootQuery {
     login(email: String!, password: String!) : AuthData
     ShowAllTeams : [returnTeam!]!
     GetAllProjects : [Project!]!
-    MyProjects(NGOId : String!) : [Project]!
+    MyProjects : [Project]!
     GetModuleForProjectById(projectId: String!) : [Module]!
     GetNgo : [Organisation!]!
     GetCompany : [Organisation!]!  

@@ -7,8 +7,8 @@ const Organisation = require('../../models/organisation');
 
 module.exports = {
     createUser: async args => {
+      
       try {
-        
         const existingUser = await User.findOne({ email: args.userinput.email });
         if (existingUser) {
           throw new Error('User exists already.');
