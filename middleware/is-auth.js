@@ -33,5 +33,6 @@ module.exports = (req, res, next) => {
   req.userType = decodedToken.userType;
   req.orgId = decodedToken.orgId;
   req.isAdmin = decodedToken.isAdmin;
+  console.log(decodedToken);
   next();
 };
