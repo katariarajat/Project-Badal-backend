@@ -77,7 +77,7 @@ type User {
     username: String
     address: String
     pincode: String
-    type: String
+    utype: String
     ngoId : String
     orgId : String
     coreId : String

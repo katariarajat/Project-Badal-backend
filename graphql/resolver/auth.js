@@ -30,7 +30,7 @@ module.exports = {
         orgid = user.ngoId;
       }
       const token = jwt.sign(
-        {userId: user.id, email: user.email, userType: user.type,isAdmin : user.isAdmin, orgId : orgid },
+        {userId: user.id, email: user.email, userType: user.utype,isAdmin : user.isAdmin, orgId : orgid },
         'ProjectBadal',
         {
           expiresIn: '1h'
