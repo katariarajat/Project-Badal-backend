@@ -217,14 +217,17 @@ type UserOrg {
 
 type RootQuery {
     GetAllOrganisations : [Organisation]
+    GetCompany : [Organisation]
+    GetNgo : [Organisation]
+    
     login(email: String!, password: String!) : AuthData
+    
     GetAllProjects : [Project!]!
     MyProjects : [Project]!
 
     ShowAllTeams : [returnTeam!]!
     GetModuleForProjectById(projectId: String!) : [Module]!
-    GetNgo : [Organisation!]!
-    GetCompany : [Organisation!]!  
+
     ShowTeamsForCompany : [returnTeam!]!
     GetTaskForModuleById(moduleId: String!) : [Task!]!
     GetProjectsForCompanies(companiesId : String!) : [Project]
