@@ -3,13 +3,13 @@ const { Error } = require('mongoose');
 
 module.exports = (req, res, next) => {
   const authHeader = req.get('Authorization');
-  console.log(authHeader);
+  // console.log(authHeader);
   if (!authHeader) {
     req.isAuth = false;
     return next();
   }
   const token = authHeader.split(' ')[1];
-  
+
   if (!token || token === '') {
     req.isAuth = false;
     return next();

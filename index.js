@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const  graphqlHttp  = require('express-graphql').graphqlHTTP;
+const graphqlHttp = require('express-graphql').graphqlHTTP;
 const mongoose = require('mongoose');
 const isAuth = require('./middleware/is-auth');
 const graphQlSchema = require('./graphql/schema/schema');
@@ -10,36 +10,34 @@ const User = require('./models/user');
 const bcrypt = require('bcryptjs');
 // Mongodb connecting 
 
-async function Initialize(){
+async function Initialize() {
 
     try {
-        const existingOrganisation = await Core.findOne({email: "IIIT-H"});
-        let result=existingOrganisation;
+        const existingOrganisation = await Core.findOne({ email: "IIIT-H" });
+        let result = existingOrganisation;
         if (existingOrganisation) {
             console.log('Organisation exists already.');
         }
-        else 
-        {
+        else {
             const organisation = new Core({
                 email: "IIIT-H",
                 name: "IIIT-H",
                 address: "IIIT-Hyderabad",
                 pincode: "500032",
                 contact: "",
-                size: "", 
+                size: "",
                 company_description: "",
-                urlWebsite : "https://iiit.ac.in",
+                urlWebsite: "https://iiit.ac.in",
                 created_at: new Date().toString(),
                 updated_at: new Date().toString(),
                 deleted_at: null,
             });
             result = await organisation.save();
-        }    
+        }
         const hashedPassword = await bcrypt.hash("ADMIN", 12);
-        const isuser = await User.findOne({email : "ADMIN"});
+        const isuser = await User.findOne({ email: "ADMIN" });
         // console.log(isuser); 
-        if(!isuser)
-        {
+        if (!isuser) {
             const user = new User({
                 email: "ADMIN",
                 password: hashedPassword,
@@ -49,36 +47,35 @@ async function Initialize(){
                 pincode: "500032",
                 type: "CORE",
                 created_at: new Date(),
-                isAdmin : "YES",
+                isAdmin: "YES",
                 coreId: result.id,
                 ngoId: null,
                 iscore: "YES",
             });
             const resultuser = await user.save();
-            
+
         }
-        else 
-        {
+        else {
             console.log("Admin user already exist created");
         }
-    }catch (err) {
+    } catch (err) {
         throw err;
-      }
+    }
 }
 
 
 mongoose.connect(
     'mongodb://127.0.0.1:27017/' + process.env.MONGO_DB, { useNewUrlParser: true }
-).then(()=>{
-    app.listen(3000,() => {
+).then(() => {
+    app.listen(4000, () => {
         console.log("Mongodb connected");
         console.log("Server started");
         Initialize();
-    }); 
+    });
 })
-.catch(err => {
-    console.log("MONGO ERR",err);
-})
+    .catch(err => {
+        console.log("MONGO ERR", err);
+    })
 
 
 
@@ -90,17 +87,17 @@ app.use(bodyParser.json());
 // auth check
 app.use(isAuth);
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     if (req.method === 'OPTIONS') {
-      return res.sendStatus(200);
+        return res.sendStatus(200);
     }
     next();
 });
 // -------------
 // Find error
-const {errorType, errorName} = require('./constants');
+const { errorType, errorName } = require('./constants');
 const getErrorCode = errorName => {
     // console.log(errorName);
     // console.log(errorType[errorName]);
@@ -110,30 +107,28 @@ const getErrorCode = errorName => {
 
 
 // graphql connected
-app.use('/graphql',graphqlHttp((req,res,graphQLParams) => {
+app.use('/graphql', graphqlHttp((req, res, graphQLParams) => {
     return {
         schema: graphQlSchema,
-    context: {
-        userId: req.userId, 
-        isAuth: req.isAuth,
-        userType : req.userType,
-        orgId : req.orgId,
-        isAdmin : req.isAdmin
-    },
-    rootValue: graphQlResolvers,
-    graphiql: true,
-    formatError : (err) => {
-        // console.log(err);
-        const error = getErrorCode(err.message);
-            if(error)
-            {
-                return ({message : error.message,statusCode : error.statusCode});
+        context: {
+            userId: req.userId,
+            isAuth: req.isAuth,
+            userType: req.userType,
+            orgId: req.orgId,
+            isAdmin: req.isAdmin
+        },
+        rootValue: graphQlResolvers,
+        graphiql: true,
+        formatError: (err) => {
+            // console.log(err);
+            const error = getErrorCode(err.message);
+            if (error) {
+                return ({ message: error.message, statusCode: error.statusCode });
             }
-            else 
-            {
+            else {
                 return err;
             }
         }
     }
-    })
+})
 );
