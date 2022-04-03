@@ -165,6 +165,7 @@ module.exports = {
       },
 
       GetCompany : async (args,req) => {
+        console.log(req);
         if(!req.isAuth)
         {
           throw new Error(errorName.UNAUTHORIZED);
