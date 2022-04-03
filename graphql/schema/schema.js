@@ -77,7 +77,7 @@ type User {
     username: String
     address: String
     pincode: String
-    utype: String
+    type: String
     ngoId : String
     orgId : String
     coreId : String
@@ -104,7 +104,7 @@ input UserInputByCore{
     pincode: String
     isAdmin : String!
     orgId : String! 
-    utype : String!
+    type : String!
 
 }
 
