@@ -15,9 +15,6 @@ const OrganisationSchema = new Schema({
     phoneNumber: {
         type: String
     },
-    pincode:{
-        type : String
-    },
     size:{
         type: String,
     },

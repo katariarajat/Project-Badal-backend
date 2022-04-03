@@ -45,7 +45,7 @@ async function Initialize() {
                 contact: "",
                 address: "IIIT Hyderabad",
                 pincode: "500032",
-                utype: "CORE",
+                type: "CORE",
                 created_at: new Date(),
                 isAdmin: "YES",
                 coreId: result.id,

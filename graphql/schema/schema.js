@@ -9,9 +9,9 @@ var schema = buildSchema(`
 type Organisation{
     _id:ID
     name: String
+    email: String
     address: String
     phoneNumber : String
-    pincode: String
     size: String    
     company_description: String
     urlWebsite : String
@@ -25,7 +25,6 @@ input OrganisationInput{
     name: String!
     email : String!
     address: String
-    pincode: String
     phoneNumber: String
     size: String    
     company_description: String
