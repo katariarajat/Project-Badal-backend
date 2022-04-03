@@ -152,10 +152,6 @@ module.exports = {
         {
           throw new Error(errorName.UNAUTHORIZED);
         }
-        if(req.userType != usertype.IIITH)
-        {
-          throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
-        }
         try{
           
           const ngo = await Ngo.find();
@@ -173,20 +169,15 @@ module.exports = {
         {
           throw new Error(errorName.UNAUTHORIZED);
         }
-        if(req.userType != usertype.IIITH)
-        {
-          throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
-        }
         try{
           const company= await Organisation.find({});
+          console.log(company);
           return company.map(company => {
-            return {...company._doc,_id:company.id,created_at : company.created_at.toString(),deleted_at : company.deleted_at.toString(),updated_at : company.updated_at.toString()};
+            return {...company._doc,_id:company.id};
           });
         }
         catch{
           throw err;
         }
       },
-
-
 }
