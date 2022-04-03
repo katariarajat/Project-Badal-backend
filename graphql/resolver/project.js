@@ -9,10 +9,6 @@ module.exports = {
       {
           throw new Error(errorName.UNAUTHORIZED);
       }
-      if(req.userType != usertype.IIITH)
-      {
-          throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
-      }
       try {
             const existingprojects = await Project.find({});
             if (!existingprojects) {
@@ -29,23 +25,31 @@ module.exports = {
           }
     },
 
-    CreateProject: async (args,req) => {
+    createProject: async (args,req) => {
       if(!req.isAuth)
       {
         throw new Error(errorName.UNAUTHORIZED);
       }
+      if(req.userType != usertype.NGO)
+      {
+        throw new Error("ONLY NGO CAN CREATE NEW PROJECT");
+      }
+      if(req.isAdmin == "NO")
+      {
+        throw new Error("ONLY ADMIN CAN ADD PROJECT");
+      }
         try {
           const project = new Project({
             name : args.projectinput.name,
-            brief:args.projectinput.brief,
+            description:args.projectinput.description,
             problem_statement:args.projectinput.problem_statement,
             fileUrl:args.projectinput.fileUrl,
             domain:args.projectinput.domain,
             created_at:new Date().toString(),
             updated_at : new Date().toString(),
             deleted_at : null,
-            NGOId: req.orgId,
-            status:args.projectinput.status,
+            ngoId : req.orgId,
+            status : "00",
             tags : args.projectinput.tags,
           });
     
@@ -56,6 +60,7 @@ module.exports = {
           throw err;
         }
       },
+
       UpdateStatusOfProject: async (args,req) =>{
         if(!req.isAuth)
         {

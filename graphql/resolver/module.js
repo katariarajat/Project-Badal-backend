@@ -25,6 +25,9 @@ module.exports = {
                 updated_at: new Date().toString(),
                 deleted_at: null,
                 ui_screen : args.moduleInput.ui_screen,
+                api_build : args.moduleInput.api_build,
+                commit_id : args.moduleInput.commit_id,
+                repo : args.moduleInput.repo,
                 db_tables : args.moduleInput.db_tables,
                 tags : args.moduleInput.tags,
             });

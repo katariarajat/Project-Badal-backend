@@ -27,8 +27,6 @@ module.exports = {
             const result = await newteam.save();
             return {...result._doc,_id: result.id};
         }
-        
-        
     },
 
     ShowTeamsForCompany: async (args,req) => {
@@ -109,7 +107,7 @@ module.exports = {
                     }
                 ],
                 projectId : args.projectId,
-                orgId : args.orgId,
+                orgId : req.orgId,
             }); 
             const resultModuleTeam = await moduleTeam.save();
             return {

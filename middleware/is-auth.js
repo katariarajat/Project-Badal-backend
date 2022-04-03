@@ -32,6 +32,6 @@ module.exports = (req, res, next) => {
   req.userId = decodedToken.userId;
   req.userType = decodedToken.userType;
   req.orgId = decodedToken.orgId;
-  console.log(req.orgId);
+  req.isAdmin = decodedToken.isAdmin;
   next();
 };

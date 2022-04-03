@@ -23,6 +23,7 @@ type Organisation{
 
 input OrganisationInput{
     name: String!
+    email : String!
     address: String
     pincode: String
     phoneNumber: String
@@ -31,6 +32,7 @@ input OrganisationInput{
     urlWebsite : String
     tags : [String]
 }
+
 
 type Module{
     _id: ID
@@ -70,31 +72,40 @@ input ModuleInput{
 type User {
     _id:ID
     email: String!
-    password: String
-    name: String
+    password: String!
+    name: String!
     username: String
     address: String
     pincode: String
     type: String
     ngoId : String
     orgId : String
+    coreId : String
     created_at: String 
     updated_at: String
     deleted_at: String
-    iscore : String
+    isAdmin : String
 }
 
 input UserInput{
     email: String!
     password: String!
     name: String!
-    username: String
     address: String
     pincode: String
-    type : String!
-    ngoId : String
-    orgId: String
-    iscore : String
+    isAdmin : String!
+}
+
+input UserInputByCore{
+    email: String!
+    password: String!
+    name: String!
+    address: String
+    pincode: String
+    isAdmin : String!
+    orgId : String! 
+    utype : String!
+
 }
 
 type Project{
@@ -119,7 +130,6 @@ input ProjectInput{
     problem_statement:String
     fileUrl:String
     domain:String
-    ngoId : String
     repoId : String
     status: String
     tags : [String]
@@ -129,7 +139,6 @@ type Team{
     name: String
     participants : [String]
     taskMeta : [String]
-    organisation : String
 }
 
 type returnTeam{
@@ -188,12 +197,31 @@ input SkillInput{
     project : Int
 }
 
+type UserOrg {
+    _id:ID
+    email: String!
+    password: String!
+    name: String!
+    username: String
+    address: String
+    pincode: String
+    type: String
+    ngoId : String
+    orgId : String
+    coreId : String
+    created_at: String 
+    updated_at: String
+    deleted_at: String
+    isAdmin : String
+}
+
 type RootQuery {
     GetAllOrganisations : [Organisation]
     login(email: String!, password: String!) : AuthData
-    ShowAllTeams : [returnTeam!]!
     GetAllProjects : [Project!]!
     MyProjects : [Project]!
+
+    ShowAllTeams : [returnTeam!]!
     GetModuleForProjectById(projectId: String!) : [Module]!
     GetNgo : [Organisation!]!
     GetCompany : [Organisation!]!  
@@ -204,36 +232,42 @@ type RootQuery {
     GetSkillForProject : [Skill]!
 }
 
+
 type RootMutation {
-    createUser(userinput: UserInput): User!
+    createUser(userinput: UserInput): User
+    createUserForOrgByCore(userinput:UserInputByCore ): User
+    
     createOrganisation(organisationinput: OrganisationInput): Organisation!
     createNgo(organisationinput: OrganisationInput): Organisation!
-    CreateProject(projectinput: ProjectInput) : Project!
-    createTeam(teaminput : TeamInput) : Team!
-    UpdateStatusOfProject(projectId: String!, status: String!): Project!
+    createCore(organisationinput: OrganisationInput): Organisation!
+
+    createProject(projectinput: ProjectInput) : Project!
     AddModuleToProjectById(moduleInput : ModuleInput) : Module
+    UpdateStatusOfProject(projectId: String!, status: String!): Project!
+
     UpdateModuleStatus(status: String!,moduleId: String!) : Module!
     AddTaskToModuleById(taskInput: TaskInput) : Task!
+
+    createTeam(teaminput : TeamInput) : Team!
     AddUserToTeam(userIds : [String], teamId : String) : Team!
+    AssignModuleToTeam(teamId: String!, moduleId: String!, projectId: String!) : ModuleTeam!
+
     UpdateStatusOfTask(TaskId: String!,status : String!) : Task!
+
     AddEmployeeToCompany(employeeId: String!,companyId: String!) : User!
     RemoveEmployeeFromCompany(employeeId: String!) : User!
-    AssignModuleToTeam(teamId: String!, moduleId: String!, projectId: String!, organisationId: String!) : Team!
+
     GlobalSkillAdd(skills : [SkillInput]) : [Skill]
 }
 
 type ModuleTeam {
-    moduleId: Module
-    teamId : Team
+    _id : ID!
+    moduleId: [Module]
     Status : String
     projectId : Project
     orgId : Organisation
 }
 
-input ModuleTeaminput{
-    moduleId : String
-    teamId : String
-}
 
 schema {
     query: RootQuery

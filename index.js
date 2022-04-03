@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const isAuth = require('./middleware/is-auth');
 const graphQlSchema = require('./graphql/schema/schema');
 const graphQlResolvers = require('./graphql/resolver/index');
-const Organisation = require('./models/organisation');
+const Core = require('./models/core');
 const User = require('./models/user');
 const bcrypt = require('bcryptjs');
 // Mongodb connecting 
@@ -13,27 +13,26 @@ const bcrypt = require('bcryptjs');
 async function Initialize(){
 
     try {
-        const existingOrganisation = await Organisation.findOne({email: "IIIT-H"});
+        const existingOrganisation = await Core.findOne({email: "IIIT-H"});
         let result=existingOrganisation;
         if (existingOrganisation) {
             console.log('Organisation exists already.');
         }
         else 
         {
-            const organisation = new Organisation({
+            const organisation = new Core({
                 email: "IIIT-H",
                 name: "IIIT-H",
                 address: "IIIT-Hyderabad",
                 pincode: "500032",
                 contact: "",
-                size: "",    
+                size: "", 
                 company_description: "",
                 urlWebsite : "https://iiit.ac.in",
-                created_at: new Date(),      
-                updated_at: new Date(),
+                created_at: new Date().toString(),
+                updated_at: new Date().toString(),
                 deleted_at: null,
             });
-            
             result = await organisation.save();
         }    
         const hashedPassword = await bcrypt.hash("ADMIN", 12);
@@ -48,9 +47,10 @@ async function Initialize(){
                 contact: "",
                 address: "IIIT Hyderabad",
                 pincode: "500032",
-                type: "IIITH",
+                type: "CORE",
                 created_at: new Date(),
-                orgId: result.id,
+                isAdmin : "YES",
+                coreId: result.id,
                 ngoId: null,
                 iscore: "YES",
             });
@@ -82,19 +82,28 @@ mongoose.connect(
 
 
 
+
 // ----------
 const app = express();
 app.use(bodyParser.json());
 
 // auth check
 app.use(isAuth);
-
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(200);
+    }
+    next();
+});
 // -------------
 // Find error
 const {errorType, errorName} = require('./constants');
 const getErrorCode = errorName => {
-    console.log(errorName);
-    console.log(errorType[errorName]);
+    // console.log(errorName);
+    // console.log(errorType[errorName]);
     return errorType[errorName];
 }
 // -------------
@@ -109,21 +118,21 @@ app.use('/graphql',graphqlHttp((req,res,graphQLParams) => {
         isAuth: req.isAuth,
         userType : req.userType,
         orgId : req.orgId,
+        isAdmin : req.isAdmin
     },
     rootValue: graphQlResolvers,
     graphiql: true,
     formatError : (err) => {
-        console.log(err);
+        // console.log(err);
         const error = getErrorCode(err.message);
-        console.log("Hello ", error);
-        if(error != null)
-        {
-            return ({message : error.message,statusCode : error.statusCode});
-        }
-        else 
-        {
-            return err;
-        }
+            if(error)
+            {
+                return ({message : error.message,statusCode : error.statusCode});
+            }
+            else 
+            {
+                return err;
+            }
         }
     }
     })

@@ -7,7 +7,7 @@ const OrganisationSchema = new Schema({
         type: String,
     },
     email:{
-        type: String,
+        type:String,
     },
     address: {
          type: String,
@@ -44,4 +44,4 @@ const OrganisationSchema = new Schema({
     ]
 });
 
-module.exports = mongoose.model('Organisation', OrganisationSchema);
+module.exports = mongoose.model('Core', OrganisationSchema);

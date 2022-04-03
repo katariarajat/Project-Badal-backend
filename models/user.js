@@ -9,7 +9,7 @@ const userschema = new Schema({
     username : String,
     address: String,
     pincode: String,
-    type: {type: String, enum: ["NGO", "ORG","IIITH"]} ,
+    type: {type: String, enum: ["NGO", "COMP","CORE"]} ,
     ngoId : {
         type: Schema.Types.ObjectId,
         ref: 'Ngo'
@@ -18,9 +18,13 @@ const userschema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Organisation'
     },
-    iscore : String,
+    coreId : {
+        type: Schema.Types.ObjectId,
+        ref: 'Core'
+    },
+    isAdmin : {type :String, enum: ["YES","NO"]},
     updated_at: String,
-    created_at: String, 
+    created_at: String,
     deleted_at: String,
     skill : [{
         type: Schema.Types.ObjectId,

@@ -7,7 +7,8 @@ exports.errorName= {
     MONGO_ACCESS_ERROR : 'MONGO_ACCESS_ERROR',
     ORG_ALREADY_EXISTS : 'ORG_ALREADY_EXISTS',
     ALREADY_EXIST : 'ALREADY_EXIST',
-    DO_NOT_EXIST : 'DO_NOT_EXIST'
+    DO_NOT_EXIST : 'DO_NOT_EXIST',
+    ADMIN_ACCESS_ONLY : 'ADMIN_ACCESS_ONLY'
 }
 
 exports.errorType={
@@ -46,12 +47,18 @@ exports.errorType={
     ORG_ALREADY_EXISTS : {
         message : 'ORGANISATION ALREADY EXIST',
         statusCode : 405
+    },
+    ADMIN_ACCESS_ONLY : {
+        message : 'ADMIN OF ORGANISATION CAN ACCESS IT',
+        statusCode : 401
     }
-
 }
+
+exports.usertypeName = ["NGO","CORE","COMP"];
+
 
 exports.usertype = {
     NGO : "NGO",
-    IIITH : "IIITH",
+    CORE : "CORE",
     COMP : "COMP"
 }

@@ -6,6 +6,9 @@ const NgoSchema = new Schema({
     name:{
         type: String,
     },
+    email:{
+        type:String,
+    },
     address: {
          type: String,
     },
