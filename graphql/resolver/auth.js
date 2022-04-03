@@ -33,21 +33,8 @@ module.exports = {
       {
         expiresIn: '1h'
       }
-<<<<<<< HEAD
     );
     console.log(token, user.id);
     return { userId: user.id, token: token, tokenExpiration: 1 };
   }
 };
-=======
-      const token = jwt.sign(
-        {userId: user.id, email: user.email, userType: user.utype,isAdmin : user.isAdmin, orgId : orgid },
-        'ProjectBadal',
-        {
-          expiresIn: '1h'
-        }
-      );
-      return { userId: user.id, token: token, tokenExpiration: 1 };
-    }
-  };
->>>>>>> 5ee05b70c3e7ed2adea5881223a7abb2d6bb7206
