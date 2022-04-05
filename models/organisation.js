@@ -18,6 +18,9 @@ const OrganisationSchema = new Schema({
     size:{
         type: String,
     },
+    teamSize : {
+        type : String,
+    },
     company_description:{
         type: String,
     },

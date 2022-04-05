@@ -8,17 +8,18 @@ var schema = buildSchema(`
 
 type Organisation{
     _id:ID
-    name: String
-    email: String
+    name: String!
+    email: String!
     address: String
     phoneNumber : String
-    size: String    
+    size: String
+    teamSize : String    
     company_description: String
     urlWebsite : String
     created_at: String      
     updated_at: String
     deleted_at: String
-    tags : [String]
+    tags : [Tag]
 }
 
 input OrganisationInput{
@@ -26,16 +27,47 @@ input OrganisationInput{
     email : String!
     address: String
     phoneNumber: String
-    size: String    
     company_description: String
     urlWebsite : String
+    tags : [String]
+}
+
+type Tag{
+    _id : ID
+    skill : String
+}
+
+type Project{
+    _id : ID
+    name : String
+    description : String
+    problem_statement:String
+    fileUrl:String
+    domain:String
+    created_at:String
+    updated_at : String
+    deleted_at : String
+    ngoId : String
+    repoId : String
+    status: String
+    tags : [Tag]
+}
+
+input ProjectInput{
+    name : String
+    description : String
+    problem_statement:String
+    fileUrl:String
+    domain:String
+    repoId : String
+    status: String
     tags : [String]
 }
 
 
 type Module{
     _id: ID
-    projectId: String!
+    projectId: String
     description: String
     status: String
     start_date:String
@@ -44,13 +76,12 @@ type Module{
     updated_at:String
     deleted_at: String
     assigned_to: String
-    skills : [String]
+    skills : [Tag]
     ui_screen : [String]
     api_build : [String]
     db_tables: [String]
     commit_id : String
     repo : String
-    tags : [String]
 }
 
 input ModuleInput{
@@ -65,25 +96,23 @@ input ModuleInput{
     db_tables: [String]
     commit_id : String
     repo : String
-    tags : [String]
 }
 
 type User {
     _id:ID
     email: String!
-    password: String!
     name: String!
     username: String
     address: String
     pincode: String
     type: String
-    ngoId : String
-    orgId : String
-    coreId : String
+    ngoId : Organisation
+    orgId : Organisation
+    coreId : Organisation
+    isAdmin : String
     created_at: String 
     updated_at: String
     deleted_at: String
-    isAdmin : String
 }
 
 input UserInput{
@@ -102,48 +131,21 @@ input UserInputByCore{
     address: String
     pincode: String
     isAdmin : String!
-    orgId : String! 
+    orgId : String!
     type : String!
-
 }
 
-type Project{
-    _id : ID
-    name : String
-    description : String
-    problem_statement:String
-    fileUrl:String
-    domain:String
-    created_at:String
-    updated_at : String
-    deleted_at : String
-    ngoId : String
-    repoId : String
-    status: String
-    tags : [String]
-}
-
-input ProjectInput{
-    name : String
-    description : String
-    problem_statement:String
-    fileUrl:String
-    domain:String
-    repoId : String
-    status: String
-    tags : [String]
-}
 
 type Team{
     name: String
-    participants : [String]
-    taskMeta : [String]
+    participants : [User]
+    taskMeta : [Tag]
 }
 
 type returnTeam{
     name: String
-    participants : [String]
-    taskMeta : [String]
+    participants : [User]
+    taskMeta : [Tag]
     organisation : Organisation
 }
 
@@ -194,42 +196,28 @@ input SkillInput{
     skill : String!
     user : Int
     project : Int
-}
-
-type UserOrg {
-    _id:ID
-    email: String!
-    password: String!
-    name: String!
-    username: String
-    address: String
-    pincode: String
-    type: String
-    ngoId : String
-    orgId : String
-    coreId : String
-    created_at: String 
-    updated_at: String
-    deleted_at: String
-    isAdmin : String
+    org : Int
 }
 
 type RootQuery {
-    GetAllOrganisations : [Organisation]
-    GetCompany : [Organisation]
-    GetNgo : [Organisation]
     
     login(email: String!, password: String!) : AuthData
+
+    
+    GetCompany : [Organisation]
+    GetNgo : [Organisation]
     
     GetAllProjects : [Project!]!
     MyProjects : [Project]!
 
     ShowAllTeams : [returnTeam!]!
-    GetModuleForProjectById(projectId: String!) : [Module]!
-
     ShowTeamsForCompany : [returnTeam!]!
-    GetTaskForModuleById(moduleId: String!) : [Task!]!
+
+    GetModuleForProjectById(projectId: String!) : [Module]!
     GetProjectsForCompanies(companiesId : String!) : [Project]
+
+    GetTaskForModuleById(moduleId: String!) : [Task!]!
+    
     GetSkillForUser : [Skill]!
     GetSkillForProject : [Skill]!
 }
@@ -277,4 +265,13 @@ schema {
 }
 `)
 
+
+
+/**
+ * REMOVED QUERIES[NO LONGER REQUIRED]
+ * GetAllOrganisations : [Organisation]
+ * 
+ * REMOVED MUTATIONS[NO LONGER REQUIRED]
+ * 
+ */
 module.exports = schema

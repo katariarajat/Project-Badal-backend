@@ -24,7 +24,7 @@ module.exports = {
               address: args.organisationinput.address,
               phoneNumber: args.organisationinput.address,
               pincode: args.organisationinput.pincode,
-              size: args.organisationinput.size,    
+              size : "",
               company_description: args.organisationinput.company_description,
               urlWebsite : args.organisationinput.urlWebsite,
               created_at: new Date().toString(),      
@@ -50,11 +50,11 @@ module.exports = {
       {
         throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
       }
+      const existingOrganisation = await Ngo.findOne({email: args.organisationinput.email});
+      if (existingOrganisation) {
+        throw new Error(errorType.ORG_ALREADY_EXISTS);
+      }
         try {
-          const existingOrganisation = await Ngo.findOne({email: args.organisationinput.email});
-          if (existingOrganisation) {
-            throw new Error(errorType.ORG_ALREADY_EXISTS);
-          }
           
           const organisation = new Ngo({
             name: args.organisationinput.name,
@@ -62,7 +62,7 @@ module.exports = {
             address: args.organisationinput.address,
             phoneNumber: args.organisationinput.address,
             pincode: args.organisationinput.pincode,
-            size: args.organisationinput.size,    
+            size : "",
             company_description: args.organisationinput.company_description,
             urlWebsite : args.organisationinput.urlWebsite,
             created_at: new Date(),      
@@ -87,19 +87,18 @@ module.exports = {
         {
           throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
         }
-          try {
-            const existingOrganisation = await Core.findOne({email: args.organisationinput.email});
-            if (existingOrganisation) {
-              throw new Error(errorType.ORG_ALREADY_EXISTS);
-            }
-            
+        const existingOrganisation = await Core.findOne({email: args.organisationinput.email});
+        if (existingOrganisation) {
+          throw new Error(errorType.ORG_ALREADY_EXISTS);
+        }
+        try {
             const organisation = new Core({
               name: args.organisationinput.name,
               email : args.organisationinput.email,
               address: args.organisationinput.address,
               phoneNumber: args.organisationinput.address,
               pincode: args.organisationinput.pincode,
-              size: args.organisationinput.size,    
+              size : "",
               company_description: args.organisationinput.company_description,
               urlWebsite : args.organisationinput.urlWebsite,
               created_at: new Date().toString(),      
@@ -113,47 +112,45 @@ module.exports = {
             throw err;
           }
         },
-      GetAllOrganisations : async (args,req) => { 
+      // GetAllOrganisations : async (args,req) => { 
         
-        if(req.isAuth)
-        {
-          if(req.userType != 'IIITH')
-          {
-            throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
-          }
-          try {
-            // console.log(req);
-              let existingOrganisation = await Organisation.find({});
-              let existingNgo = await Ngo.find({});
-              if (!existingOrganisation || !existingNgo) {
-                throw new Error(errorName.MONGO_ACCESS_ERROR);
-              }
-              existingOrganisation = existingOrganisation.concat(existingNgo);
-              return existingOrganisation.map(existingOrganisation => {
-                  return {
-                  ...existingOrganisation._doc,
-                  _id: existingOrganisation.id,
-                };
-                });
-            } 
-            catch (err) {
-              throw err;
-            }
-        }
-        else
-        {
-          throw new Error(errorName.UNAUTHORIZED);
-        }
-      },
+      //   if(req.isAuth)
+      //   {
+      //     if(req.userType != 'IIITH')
+      //     {
+      //       throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
+      //     }
+      //     try {
+      //       // console.log(req);
+      //         let existingOrganisation = await Organisation.find({});
+      //         let existingNgo = await Ngo.find({});
+      //         if (!existingOrganisation || !existingNgo) {
+      //           throw new Error(errorName.MONGO_ACCESS_ERROR);
+      //         }
+      //         existingOrganisation = existingOrganisation.concat(existingNgo);
+      //         return existingOrganisation.map(existingOrganisation => {
+      //             return {
+      //             ...existingOrganisation._doc,
+      //             _id: existingOrganisation.id,
+      //           };
+      //           });
+      //       } 
+      //       catch (err) {
+      //         throw err;
+      //       }
+      //   }
+      //   else
+      //   {
+      //     throw new Error(errorName.UNAUTHORIZED);
+      //   }
+      // },
 
       GetNgo : async (args,req) => {
-        console.log(req);
         if(!req.isAuth)
         {
           throw new Error(errorName.UNAUTHORIZED);
         }
         try{
-          
           const ngo = await Ngo.find();
           return ngo.map(ngo => {
             return {...ngo._doc,_id : ngo.id,created_at : ngo.created_at.toString(),deleted_at : ngo.deleted_at.toString(),updated_at : ngo.updated_at.toString()};
@@ -165,14 +162,12 @@ module.exports = {
       },
 
       GetCompany : async (args,req) => {
-        console.log(req);
         if(!req.isAuth)
         {
           throw new Error(errorName.UNAUTHORIZED);
         }
         try{
           const company= await Organisation.find({});
-          console.log(company);
           return company.map(company => {
             return {...company._doc,_id:company.id};
           });

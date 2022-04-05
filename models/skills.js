@@ -14,6 +14,10 @@ const eventSchema = new Schema({
     project : {
         type : Number,
         enum : [0,1]
+    },
+    org :{
+        type : Number,
+        enum :[0,1]
     }
 });
 

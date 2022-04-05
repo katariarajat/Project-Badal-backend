@@ -43,12 +43,6 @@ const eventSchema = new Schema({
     db_tables : [String],
     commit_id : String,
     repo : String,
-    tags : [
-        {
-        type : Schema.Types.ObjectId,
-        ref: 'SkillTags'
-        }   
-    ]
         
 });
 

@@ -11,13 +11,11 @@ module.exports = {
         {
             throw new Error(errorName.UNAUTHORIZED);
         }
-        console.log(req);
         if(req.isAdmin == "NO")
         {
             throw new Error(errorName.ADMIN_ACCESS_ONLY);
         }
         const existingUser = await User.findOne({ email: args.userinput.email });
-        console.log(existingUser);
         if (existingUser) {
             throw new Error(errorName.ALREADY_EXIST);
         }
@@ -52,8 +50,9 @@ module.exports = {
         });
     
         const result = await user.save();
-        console.log(result);
-          return { ...result._doc, password: null, _id: result.id };
+        const finaluser = await User.find({_id:result.id}).populate("orgId").populate("coreId").populate("ngoId");
+        console.log(finaluser);  
+        return { ...finaluser._doc, password: null, _id: finaluser.id };
         
       },
       createUserForOrgByCore: async (args,req) => {

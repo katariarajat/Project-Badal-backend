@@ -46,10 +46,9 @@ async function Initialize() {
                 address: "IIIT Hyderabad",
                 pincode: "500032",
                 type: "CORE",
-                created_at: new Date(),
+                created_at: new Date().toString(),
                 isAdmin: "YES",
                 coreId: result.id,
-                ngoId: null,
                 iscore: "YES",
             });
             const resultuser = await user.save();
@@ -120,7 +119,6 @@ app.use('/graphql', graphqlHttp((req, res, graphQLParams) => {
         rootValue: graphQlResolvers,
         graphiql: true,
         formatError: (err) => {
-            // console.log(err);
             const error = getErrorCode(err.message);
             if (error) {
                 return ({ message: error.message, statusCode: error.statusCode });
