@@ -151,9 +151,9 @@ module.exports = {
           throw new Error(errorName.UNAUTHORIZED);
         }
         try{
-          const ngo = await Ngo.find();
+          const ngo = await Ngo.find({});
           return ngo.map(ngo => {
-            return {...ngo._doc,_id : ngo.id,created_at : ngo.created_at.toString(),deleted_at : ngo.deleted_at.toString(),updated_at : ngo.updated_at.toString()};
+            return {...ngo._doc,_id : ngo.id};
           });
         }
         catch{
