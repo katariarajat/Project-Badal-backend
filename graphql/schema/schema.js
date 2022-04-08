@@ -146,6 +146,7 @@ type Team{
 }
 
 type returnTeam{
+    _id : ID!
     name: String
     participants : [User]
     taskMeta : [Tag]
@@ -214,8 +215,8 @@ type RootQuery {
     MyProjects : [Project]!
     GetProjectForNgoByNgoId(ngoId: String!) : [Project]!
 
-    ShowAllTeams : [returnTeam!]!
-    ShowTeamsForCompany : [returnTeam!]!
+    GetAllTeams : [returnTeam!]!
+    GetTeamsForCompany(orgId : String!) : [returnTeam]!
 
     GetModuleForProjectById(projectId: String!) : [Module]!
     GetProjectsForCompanies(companiesId : String!) : [Project]

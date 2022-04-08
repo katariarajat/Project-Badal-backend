@@ -29,13 +29,13 @@ module.exports = {
         }
     },
 
-    ShowTeamsForCompany: async (args,req) => {
+    GetTeamsForCompany: async (args,req) => {
         if(!req.isAuth)
         {
             throw new Error(errorName.UNAUTHORIZED);
         }
         try{
-            const Allteams = await Team.find({organisation : req.orgId}).populate('organisation');
+            const Allteams = await Team.find({organisation : args.orgId}).populate('organisation');
             return Allteams.map(team => {
                 return {...team._doc,
                     _id: team.id}
