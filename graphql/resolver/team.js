@@ -12,7 +12,6 @@ module.exports = {
             throw new Error(errorName.UNAUTHORIZED);
         }
         const team = await Team.findOne({name: args.teaminput.name});
-        console.log(req.orgId);
         if(team){
             throw new Error(errorName.ALREADY_EXIST);
         }
@@ -51,10 +50,10 @@ module.exports = {
         {
             throw new Error(errorName.UNAUTHORIZED);
         }
-        if(req.userType != usertype.IIITH)
-        {
-            throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
-        }
+        // if(req.userType != usertype.CORE)
+        // {
+        //     throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
+        // }
         try{
             const teams = await Team.find();
             return teams.map(team => {
