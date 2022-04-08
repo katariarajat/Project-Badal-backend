@@ -17,6 +17,7 @@ module.exports = {
         try{
             const newModule= new Module({
                 projectId: args.moduleInput.projectId,
+                nmae: args.moduleInput.name,
                 description: args.moduleInput.description,
                 status: args.moduleInput.status,
                 name : args.moduleInput.name,
