@@ -19,7 +19,7 @@ module.exports = {
         }
         const newTask = new Task({
             name: args.taskInput.name,
-            desciption: args.taskInput.description,
+            description: args.taskInput.description,
             status : args.taskInput.status,
             assigned_to: null,
             ModuleId: args.taskInput.ModuleId,
