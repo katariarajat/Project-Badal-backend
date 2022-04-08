@@ -19,7 +19,8 @@ module.exports = {
         }
         const newTask = new Task({
             name: args.taskInput.name,
-            brief: args.taskInput.brief,
+            desciption: args.taskInput.description,
+            status : args.taskInput.status,
             assigned_to: null,
             ModuleId: args.taskInput.ModuleId,
             created_at: new Date().toString(),
@@ -49,7 +50,7 @@ module.exports = {
             throw new Error(errorName.UNAUTHORIZED);
         }
         try{
-            const tasks=await Task.find({_id: args.moduleId});
+            const tasks=await Task.find({ModuleId: args.moduleId});
             return tasks.map(task => {
                 return {...task._doc,_id:task.id};
             });
