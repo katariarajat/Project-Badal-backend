@@ -29,7 +29,7 @@ module.exports = {
         const result = await newTask.save();
         return {...result._doc,_id:result.id};
     },
-    UpdateStatusOfTask: async (args) => {
+    UpdateStatusOfTask: async (args,req) => {
         if(!req.isAuth)
         {
             throw new Error(errorName.UNAUTHORIZED);
@@ -43,7 +43,7 @@ module.exports = {
             throw err;
         }
     },
-    GetTaskForModuleById: async (args) => {
+    GetTaskForModuleById: async (args,req) => {
         if(!req.isAuth)
         {
             throw new Error(errorName.UNAUTHORIZED);

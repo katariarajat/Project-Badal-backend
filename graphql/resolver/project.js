@@ -30,9 +30,9 @@ module.exports = {
       {
         throw new Error(errorName.UNAUTHORIZED);
       }
-      if(req.userType != usertype.NGO)
+      if(req.orgId != args.projectinput.orgId && req.userType != usertype.CORE)
       {
-        throw new Error("ONLY NGO CAN CREATE NEW PROJECT");
+        throw new Error("Not Authorized to create Project")
       }
       if(req.isAdmin == "NO")
       {
@@ -48,7 +48,7 @@ module.exports = {
             created_at:new Date().toString(),
             updated_at : new Date().toString(),
             deleted_at : null,
-            ngoId : req.orgId,
+            ngoId : args.projectinput.orgId,
             status : "00",
             tags : args.projectinput.tags,
           });

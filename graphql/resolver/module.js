@@ -10,7 +10,7 @@ module.exports = {
         {
           throw new Error(errorName.UNAUTHORIZED);
         }
-        if(req.userType != usertype.IIITH)
+        if(req.userType != usertype.CORE)
         {
             throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
         }

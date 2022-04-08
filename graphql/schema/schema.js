@@ -62,6 +62,7 @@ input ProjectInput{
     repoId : String
     status: String
     tags : [String]
+    orgId : String
 }
 
 
@@ -226,7 +227,7 @@ type RootQuery {
 type RootMutation {
     createUser(userinput: UserInput): User
     createUserForOrgByCore(userinput:UserInputByCore ): User
-    
+
     createOrganisation(organisationinput: OrganisationInput): Organisation!
     createNgo(organisationinput: OrganisationInput): Organisation!
     createCore(organisationinput: OrganisationInput): Organisation!
