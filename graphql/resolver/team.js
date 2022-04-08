@@ -95,6 +95,8 @@ module.exports = {
             throw new Error(errorName.UNAUTHORIZED);
         }
         const oldModuleTeam = await ModuleTeam.findOne({orgId : req.orgId, projectId: args.projectId});
+        const givenModule = await Module.findOne({_id : args.moduleId});
+        givenModule.assigned_to = args.teamId;
         if(!oldModuleTeam)
         {
             const moduleTeam = new ModuleTeam({
@@ -105,10 +107,13 @@ module.exports = {
                         Status : "0"
                     }
                 ],
-                projectId : args.projectId,
+                projectId : givenModule.projectId,
                 orgId : req.orgId,
             }); 
+            
             const resultModuleTeam = await moduleTeam.save();
+            
+            await givenModule.save();
             return {
                 ...resultModuleTeam._doc,
                 _id: resultModuleTeam.id
@@ -123,15 +128,12 @@ module.exports = {
             }
             oldModuleTeam.modules.push(module);
             const resultModuleTeam = await oldModuleTeam.save();
+            
             return {
                 ...resultModuleTeam._doc,
                 _id: resultModuleTeam.id
             };
         }
-        
-        
-
-
     },
     
 }

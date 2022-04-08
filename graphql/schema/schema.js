@@ -211,6 +211,8 @@ type RootQuery {
     GetCompany : [Organisation]
     GetNgo : [Organisation]
     
+    GetEmployeForCompany(orgId : String!)
+
     GetAllProjects : [Project!]!
     MyProjects : [Project]!
     GetProjectForNgoByNgoId(ngoId: String!) : [Project]!
@@ -245,7 +247,7 @@ type RootMutation {
 
     createTeam(teaminput : TeamInput) : Team!
     AddUserToTeam(userIds : [String], teamId : String) : Team!
-    AssignModuleToTeam(teamId: String!, moduleId: String!, projectId: String!) : ModuleTeam!
+    AssignModuleToTeam(teamId: String!, moduleId: String!) : ModuleTeam!
 
     UpdateStatusOfTask(TaskId: String!,status : String!) : Task!
 

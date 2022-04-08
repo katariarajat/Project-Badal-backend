@@ -176,4 +176,23 @@ module.exports = {
           throw err;
         }
       },
+      GetEmployeForCompany : async (args,req) => {
+        if(!req.isAuth)
+        {
+          throw new Error(errorName.UNAUTHORIZED);
+        }
+        if(req.userType != usertype.CORE && req.orgId != args.companyId)
+        {
+          throw new Error("ACCESS DENIED");
+        }
+        try{
+          const users = await User.find({orgId : args.companyId});
+          return users.map(user => {
+            return {...user._doc,_id:user.id};
+          });
+        }
+        catch{
+          throw err;
+        }
+      }
 }

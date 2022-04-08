@@ -76,7 +76,7 @@ module.exports = {
         const hashedPassword = await bcrypt.hash(args.userinput.password, 12);
         let orgId,coreId,ngoId;
         let isAdmin = "NO";
-        if(args.userinput.utype == usertype.COMP)
+        if(args.userinput.type == usertype.COMP)
         {
             orgId = args.userinput.orgId;
             isAdmin = args.userinput.isAdmin;
@@ -85,29 +85,45 @@ module.exports = {
             {
                 throw new Error("Organisation Does not exists");
             }
-
+            else 
+            {
+                var size = parseInt(org.size)+1;
+                org.size = size.toString();
+                await org.save();               
+            }
         }
-        if(args.userinput.utype == usertype.CORE)
+        if(args.userinput.type == usertype.CORE)
         {
             coreId = args.userinput.orgId;
             isAdmin = "YES";
-            const org = await Core.findOne({_id : args.userinput.orgId});
+            const org = await Core.findOne({_id : args.userinput.coreId});
             if(!org)
             {
                 throw new Error("Organisation Does not exists");
             }
+            else 
+            {
+                var size = parseInt(org.size)+1;
+                org.size = size.toString();
+                await org.save();               
+            }
         }
-        if(args.userinput.utype == usertype.NGO)
+        if(args.userinput.type == usertype.NGO)
         {
             ngoId = args.userinput.orgId;
             isAdmin = args.userinput.isAdmin;
-            const org = await Ngo.findOne({_id : args.userinput.orgId});
+            const org = await Ngo.findOne({_id : args.userinput.ngoId});
             if(!org)
             {
                 throw new Error("Organisation Does not exists");
             }
+            else 
+            {
+                var size = parseInt(org.size)+1;
+                org.size = size.toString();
+                await org.save();               
+            }
         }
-        console.log(coreId,ngoId,orgId);
         const user = new User({
         email: args.userinput.email,
         password: hashedPassword,
