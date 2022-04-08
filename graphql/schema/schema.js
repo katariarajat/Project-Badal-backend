@@ -38,7 +38,7 @@ type Tag{
 }
 
 type Project{
-    _id : ID
+    _id : ID!
     name : String
     description : String
     problem_statement:String
@@ -62,13 +62,14 @@ input ProjectInput{
     repoId : String
     status: String
     tags : [String]
-    orgId : String
+    ngoId : String!
 }
 
 
 type Module{
     _id: ID
     projectId: String
+    name : String
     description: String
     status: String
     start_date:String
@@ -87,6 +88,7 @@ type Module{
 
 input ModuleInput{
     projectId: String!
+    name : String
     description: String
     status: String
     start_date:String
@@ -210,6 +212,7 @@ type RootQuery {
     
     GetAllProjects : [Project!]!
     MyProjects : [Project]!
+    GetProjectForNgoByNgoId(ngoId: String!) : [Project]!
 
     ShowAllTeams : [returnTeam!]!
     ShowTeamsForCompany : [returnTeam!]!

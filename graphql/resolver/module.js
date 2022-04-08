@@ -19,6 +19,7 @@ module.exports = {
                 projectId: args.moduleInput.projectId,
                 description: args.moduleInput.description,
                 status: args.moduleInput.status,
+                name : args.moduleInput.name,
                 start_date : args.moduleInput.start_date,
                 end_date: null,
                 created_at: new Date().toString(),

@@ -48,7 +48,7 @@ module.exports = {
             created_at:new Date().toString(),
             updated_at : new Date().toString(),
             deleted_at : null,
-            ngoId : args.projectinput.orgId,
+            ngoId : args.projectinput.ngoId,
             status : "00",
             tags : args.projectinput.tags,
           });
@@ -60,7 +60,20 @@ module.exports = {
           throw err;
         }
       },
-
+      GetProjectForNgoByNgoId: async (args,req) => {
+        try
+        {
+          const project = await Project.find({ngoId : args.ngoId});
+          console.log(project);
+          return project.map(project => {
+            return {...project._doc,_id:project.id};
+          })
+        }
+        catch
+        {
+          return new Error("Couldn't execute query GetProjectForNgoByNgoId");
+        }
+      },
       UpdateStatusOfProject: async (args,req) =>{
         if(!req.isAuth)
         {
