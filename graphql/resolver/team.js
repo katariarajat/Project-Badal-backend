@@ -15,13 +15,15 @@ module.exports = {
         if(team){
             throw new Error(errorName.ALREADY_EXIST);
         }
+        
         else 
         {
+            var orgId = (args.orgId)?args.orgId:req.orgId;
             const newteam= new Team({
                 name: args.teaminput.name,
                 participants : args.teaminput.participants,
                 taskMeta: args.teaminput.taskMeta,
-                organisation: req.orgId,
+                organisation: orgId,
             });
             const result = await newteam.save();
             return {...result._doc,_id: result.id};
