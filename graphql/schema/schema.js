@@ -206,7 +206,6 @@ input SkillInput{
 type RootQuery {
     
     login(email: String!, password: String!) : AuthData
-
     
     GetCompany : [Organisation]
     GetNgo : [Organisation]

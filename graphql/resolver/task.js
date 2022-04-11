@@ -38,6 +38,7 @@ module.exports = {
         try{
             const task=await Task.findOne({_id:args.TaskId});
             task.status=args.status;
+            await task.save();
             return {...task._id,_id:task.id};
         }
         catch{
