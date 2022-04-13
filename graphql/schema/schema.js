@@ -157,6 +157,7 @@ input TeamInput{
     name: String
     participants : [String]
     taskMeta : [String]
+    orgId : String
 }
 
 type Solution{

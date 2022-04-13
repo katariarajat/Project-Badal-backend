@@ -15,7 +15,6 @@ module.exports = {
         if(team){
             throw new Error(errorName.ALREADY_EXIST);
         }
-        
         else 
         {
             var orgId = (args.orgId)?args.orgId:req.orgId;
