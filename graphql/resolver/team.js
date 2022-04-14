@@ -11,13 +11,13 @@ module.exports = {
         {
             throw new Error(errorName.UNAUTHORIZED);
         }
-        const team = await Team.findOne({name: args.teaminput.name});
+        const team = await Team.findOne({name: args.teaminput.name, organisation  : args.teaminput.orgId});
         if(team){
             throw new Error(errorName.ALREADY_EXIST);
         }
         else 
         {
-            var orgId = (args.orgId)?args.orgId:req.orgId;
+            var orgId = (args.teaminput.orgId)?args.teaminput.orgId:req.orgId;
             const newteam= new Team({
                 name: args.teaminput.name,
                 participants : args.teaminput.participants,

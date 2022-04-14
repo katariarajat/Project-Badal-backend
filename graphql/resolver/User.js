@@ -55,6 +55,22 @@ module.exports = {
         return { ...finaluser._doc, password: null, _id: finaluser.id };
         
       },
+      GetUserData : async (args,req) => {
+        if(!req.isAuth)
+        {
+          throw new Error(errorName.UNAUTHORIZED);
+        }
+        try{
+            const user = await User.findOne({_id : req.userId}).populate("ngoId").populate("orgId").populate("coreId");
+            return {
+                ...user._doc, _id : user.id
+            }
+        }
+        catch {
+            throw err;
+        }
+        
+      },
       createUserForOrgByCore: async (args,req) => {
         if(!req.isAuth)
         {

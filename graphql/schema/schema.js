@@ -200,6 +200,7 @@ type Skill{
 type RootQuery {
     
     login(email: String!, password: String!) : AuthData
+    GetUserData : User!
 
     GetCompany : [Organisation]
     GetNgo : [Organisation]
