@@ -22,7 +22,7 @@ module.exports = {
                 }
 
                 const skill_new = await SkillTags({
-                    skill : args.skills[i].skill,
+                    skill : args.skills[i],
                 });
 
                 const result = await skill_new.save();
@@ -37,7 +37,7 @@ module.exports = {
             throw err;
         }
     },
-    GetSkill : async (args,req) => {
+    GetSkills : async (args,req) => {
         if(!req.isAuth){
             throw new Error(errorName.UNAUTHORIZED);
         }
