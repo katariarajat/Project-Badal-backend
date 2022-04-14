@@ -7,7 +7,7 @@ module.exports = {
         if(!req.isAuth){
             throw new Error(errorName.UNAUTHORIZED);
         }
-        if(req.userType != usertype.IIITH){
+        if(req.userType != usertype.CORE){
             throw new Error(errorName.IIIT_CORE_ACCESS_ONLY)
         }
         try{
@@ -23,15 +23,12 @@ module.exports = {
 
                 const skill_new = await SkillTags({
                     skill : args.skills[i].skill,
-                    user : (args.skills[i].user)?args.skills[i].user:0,
-                    project: args.skills[i].project?args.skills[i].project:0,
                 });
 
                 const result = await skill_new.save();
                 console.log(result);
             }
             const Skills = await SkillTags.find({});
-            console.log(Skills);
             return Skills.map(skill => {
                 return {...skill._doc,_id : skill.id}
             });
@@ -40,22 +37,13 @@ module.exports = {
             throw err;
         }
     },
-    GetSkillForUser : async (args,req) => {
+    GetSkill : async (args,req) => {
         if(!req.isAuth){
             throw new Error(errorName.UNAUTHORIZED);
         }
-        const skills = await SkillTags.find({user : 1});
+        const skills = await SkillTags.find();
         return skills.map(skill => {
             return {...skill._doc,_id:skill.id};
         });
     },
-    GetSkillForProject : async (args,req) => {
-        if(!req.isAuth){
-            throw new Error(errorName.UNAUTHORIZED);
-        }
-        const skills = await SkillTags.find({project : 1});
-        return skills.map(skill => {
-            return {...skill._doc,_id:skill.id};
-        });
-    }, 
 }

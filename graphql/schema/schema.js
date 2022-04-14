@@ -197,17 +197,10 @@ type Skill{
     skill : String
 }
 
-input SkillInput{
-    skill : String!
-    user : Int
-    project : Int
-    org : Int
-}
-
 type RootQuery {
     
     login(email: String!, password: String!) : AuthData
-    
+
     GetCompany : [Organisation]
     GetNgo : [Organisation]
     
@@ -225,8 +218,7 @@ type RootQuery {
 
     GetTaskForModuleById(moduleId: String!) : [Task!]!
     
-    GetSkillForUser : [Skill]!
-    GetSkillForProject : [Skill]!
+    GetSkills : [Skill]!
 }
 
 
@@ -254,7 +246,7 @@ type RootMutation {
     AddEmployeeToCompany(employeeId: String!,companyId: String!) : User!
     RemoveEmployeeFromCompany(employeeId: String!) : User!
 
-    GlobalSkillAdd(skills : [SkillInput]) : [Skill]
+    GlobalSkillAdd(skills : [String!]!) : [Skill]
 }
 
 type ModuleTeam {
