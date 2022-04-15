@@ -6,9 +6,8 @@ const userschema = new Schema({
     email: String,
     password: String,
     name: String,
-    username : String,
     address: String,
-    pincode: String,
+    phoneNumber: String,
     type: {type: String, enum: ["NGO", "COMP","CORE"]} ,
     ngoId : {
         type: Schema.Types.ObjectId,

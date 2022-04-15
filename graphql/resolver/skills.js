@@ -14,7 +14,7 @@ module.exports = {
             console.log(args.skills);
             for(let i=0;i<args.skills.length;i++)
             {
-                const skill = await SkillTags.findOne({skill : args.skills[i].skill});
+                const skill = await SkillTags.findOne({skill : args.skills[i]});
 
                 if(skill)
                 {
@@ -46,4 +46,26 @@ module.exports = {
             return {...skill._doc,_id:skill.id};
         });
     },
+    GlobalSkillRemove : async (args,req) => {
+        if(!req.isAuth){
+            throw new Error(errorName.UNAUTHORIZED);
+        }
+        if(req.userType != usertype.CORE){
+            throw new Error(errorName.IIIT_CORE_ACCESS_ONLY)
+        }
+        console.log(args.skills);
+        try{
+            for(let i=0;i<args.skills.length;i++)
+            {
+                const skill = await SkillTags.deleteOne({skill : args.skills[i]});
+            }
+            const Skills = await SkillTags.find({});
+            return Skills.map(skill => {
+                return {...skill._doc,_id : skill.id}
+            });
+        }
+        catch{
+            throw err;
+        }
+    }
 }

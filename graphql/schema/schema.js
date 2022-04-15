@@ -120,11 +120,12 @@ type User {
 
 input UserInput{
     email: String!
-    password: String!
     name: String!
+    password : String
     address: String
     pincode: String
     isAdmin : String!
+    skill : [String]
 }
 
 input UserInputByCore{
@@ -248,6 +249,7 @@ type RootMutation {
     RemoveEmployeeFromCompany(employeeId: String!) : User!
 
     GlobalSkillAdd(skills : [String!]!) : [Skill]
+    GlobalSkillRemove(skills : [String!]!) : [Skill]
 }
 
 type ModuleTeam {
