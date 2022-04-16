@@ -11,7 +11,6 @@ module.exports = {
             throw new Error(errorName.IIIT_CORE_ACCESS_ONLY)
         }
         try{
-            console.log(args.skills);
             for(let i=0;i<args.skills.length;i++)
             {
                 const skill = await SkillTags.findOne({skill : args.skills[i]});

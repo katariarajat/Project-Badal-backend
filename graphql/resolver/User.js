@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const Organisation = require('../../models/organisation');
 const Core = require('../../models/core');
 const Ngo = require('../../models/ngo');
+const {makePassword} = require('../../GlobalFunction');
 
 module.exports = {
     createUser: async (args,req) => {
@@ -19,7 +20,8 @@ module.exports = {
         if (existingUser) {
             throw new Error(errorName.ALREADY_EXIST);
         }
-        const hashedPassword = await bcrypt.hash(args.userinput.password, 12);
+        var password = makePassword(10);
+        const hashedPassword = await bcrypt.hash(password, 12);
 
         var orgId,coreId,ngoId;
         if(req.userType == usertype.COMP)
@@ -40,7 +42,7 @@ module.exports = {
         password: hashedPassword,
         name: args.userinput.name,
         address: args.userinput.address,
-        pincode: args.userinput.pincode,
+        phoneNumber : args.userinput.phoneNumber,
         type: req.userType,
         created_at: new Date().toString(),
         orgId : orgId,
@@ -51,9 +53,7 @@ module.exports = {
     
         const result = await user.save();
         const finaluser = await User.find({_id:result.id}).populate("orgId").populate("coreId").populate("ngoId");
-        console.log(finaluser);  
-        return { ...finaluser._doc, password: null, _id: finaluser.id };
-        
+        return { ...finaluser._doc, password: password, _id: finaluser.id };
       },
       GetUserData : async (args,req) => {
         if(!req.isAuth)
@@ -63,7 +63,7 @@ module.exports = {
         try{
             const user = await User.findOne({_id : req.userId}).populate("ngoId").populate("orgId").populate("coreId");
             return {
-                ...user._doc, _id : user.id
+                ...user._doc, _id : user.id, password : null
             }
         }
         catch {
@@ -158,34 +158,4 @@ module.exports = {
         console.log(result);
           return { ...result._doc, password: null, _id: result.id };
       },
-
-
-    AddEmployeeToCompany: async (args,req) => {
-        if(!req.isAuth)
-        {
-            throw new Error(errorName.UNAUTHORIZED);
-        }
-        let user = await User.findOne({_id : args.employeeId});
-        if(user.organisationId != null)
-        {
-            throw new Error("User already a member of other company.");
-        }
-        user.organisationId = args.companyId;
-        let result = await user.save();
-        return {...result._doc, _id: result.id};
-    },
-    RemoveEmployeeFromCompany: async (args,req) => {
-        if(!req.isAuth)
-        {
-            throw new Error(errorName.UNAUTHORIZED);
-        }
-        let user = await User.findOne({_id : args.employeeId});
-        if(req.orgId != user.orgId && req.userType != usertype.IIITH)
-        {
-            throw new Error("User Does not belong to your organisation");
-        }
-        user.organisationId = "";
-        let result = await user.save();
-        return {...result._doc, _id: result.id};
-    }
 }

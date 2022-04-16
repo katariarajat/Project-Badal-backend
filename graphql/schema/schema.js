@@ -10,6 +10,7 @@ type Organisation{
     _id:ID
     name: String!
     email: String!
+    password : String
     address: String
     phoneNumber : String
     size: String
@@ -105,9 +106,9 @@ type User {
     _id:ID
     email: String!
     name: String!
-    username: String
+    password : String
+    phoneNumber : String
     address: String
-    pincode: String
     type: String
     ngoId : Organisation
     orgId : Organisation
@@ -118,12 +119,12 @@ type User {
     deleted_at: String
 }
 
+
 input UserInput{
     email: String!
     name: String!
-    password : String
+    phoneNumber : String
     address: String
-    pincode: String
     isAdmin : String!
     skill : [String]
 }

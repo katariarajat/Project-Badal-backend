@@ -2,6 +2,8 @@ const Organisation = require('../../models/organisation');
 const { errorName, usertype, errorType} = require('../../constants');
 const Ngo = require('../../models/ngo');
 const User = require('../../models/user');
+const {makePassword} = require('../../GlobalFunction');
+const bcrypt = require('bcryptjs');
 
 module.exports = {
     createOrganisation: async (args,req) => {
@@ -14,31 +16,65 @@ module.exports = {
         throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
       }
       const existingOrganisation = await Organisation.findOne({email : args.organisationinput.email});
+
       if (existingOrganisation) {
         throw new Error(errorType.ORG_ALREADY_EXISTS);
       }
-          try {
-            const organisation = new Organisation({
-              name: args.organisationinput.name,
-              email : args.organisationinput.email,
-              address: args.organisationinput.address,
-              phoneNumber: args.organisationinput.address,
-              pincode: args.organisationinput.pincode,
-              size : "",
-              company_description: args.organisationinput.company_description,
-              urlWebsite : args.organisationinput.urlWebsite,
-              created_at: new Date().toString(),      
-              updated_at: new Date().toString(),
-              deleted_at: null,
-              tags : args.organisationinput.tags, 
-            });
-      
-            const result = await organisation.save();
-      
-            return { ...result._doc, _id: result.id };
-          } catch (err) {
-            throw err;
-          }
+
+      const userold = await User.findOne({email: args.organisationinput.email});
+      if(userold)
+      {
+        throw new Error("User Already exists with this email. PLease change the email.")
+      }
+      const organisation = new Organisation({
+        name: args.organisationinput.name,
+        email : args.organisationinput.email,
+        address: args.organisationinput.address,
+        phoneNumber: args.organisationinput.phoneNumber,
+        pincode: args.organisationinput.pincode,
+        size : "1",
+        company_description: args.organisationinput.company_description,
+        urlWebsite : args.organisationinput.urlWebsite,
+        created_at: new Date().toString(),      
+        updated_at: new Date().toString(),
+        deleted_at: null,
+        tags : args.organisationinput.tags, 
+      });
+
+      const result = await organisation.save();
+      console.log(args);
+
+      var password = makePassword(10);
+      const hashedPassword = await bcrypt.hash(password, 12);
+      var orgId,coreId,ngoId;
+      if(req.userType == usertype.CORE)
+      { 
+        coreId = req.orgId;
+      }
+      else if(req.userType == usertype.COMP)
+      {
+        orgId = req.orgId;
+      }
+      else if(req.userType == usertype.NGO)
+      {
+        ngoId = req.orgId;
+      }
+      const user = new User({
+        email: args.organisationinput.email,
+        password: hashedPassword,
+        name: "Admin"+args.organisationinput.name,
+        address: args.organisationinput.address,
+        pincode: args.organisationinput.pincode,
+        type: req.userType,
+        created_at: new Date().toString(),
+        orgId : orgId,
+        coreId : coreId,
+        ngoId : ngoId,
+        isAdmin : "YES",
+        });
+      const result_user = await user.save();
+      console.log(result_user)
+      return { ...result._doc, password : password,_id: result.id };
       },
       
       createNgo : async (args,req) => {
@@ -112,39 +148,6 @@ module.exports = {
             throw err;
           }
         },
-      // GetAllOrganisations : async (args,req) => { 
-        
-      //   if(req.isAuth)
-      //   {
-      //     if(req.userType != 'IIITH')
-      //     {
-      //       throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
-      //     }
-      //     try {
-      //       // console.log(req);
-      //         let existingOrganisation = await Organisation.find({});
-      //         let existingNgo = await Ngo.find({});
-      //         if (!existingOrganisation || !existingNgo) {
-      //           throw new Error(errorName.MONGO_ACCESS_ERROR);
-      //         }
-      //         existingOrganisation = existingOrganisation.concat(existingNgo);
-      //         return existingOrganisation.map(existingOrganisation => {
-      //             return {
-      //             ...existingOrganisation._doc,
-      //             _id: existingOrganisation.id,
-      //           };
-      //           });
-      //       } 
-      //       catch (err) {
-      //         throw err;
-      //       }
-      //   }
-      //   else
-      //   {
-      //     throw new Error(errorName.UNAUTHORIZED);
-      //   }
-      // },
-
       GetNgo : async (args,req) => {
         if(!req.isAuth)
         {
