@@ -79,7 +79,7 @@ type Module{
     updated_at:String
     deleted_at: String
     assigned_to: String
-    skills : [Tag]
+    skills : [Skill]
     ui_screen : [String]
     api_build : [String]
     db_tables: [String]

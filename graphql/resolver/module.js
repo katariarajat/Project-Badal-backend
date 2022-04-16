@@ -30,9 +30,9 @@ module.exports = {
                 commit_id : args.moduleInput.commit_id,
                 repo : args.moduleInput.repo,
                 db_tables : args.moduleInput.db_tables,
-                tags : args.moduleInput.tags,
+                skills : args.moduleInput.skills,
             });
-            const result = await newModule.save();
+            const result = await newModule.save().populate('skills');
             return {...result._doc,_id:result.id};
         }
         catch{
@@ -45,7 +45,7 @@ module.exports = {
           throw new Error(errorName.UNAUTHORIZED);
         }
         try{
-            const modules = await Module.find({projectId: args.projectId});
+            const modules = await Module.findOne({projectId: args.projectId}).populate('skills');
             return modules.map(modules => {
                 return {...modules._doc,_id: modules.id};
             });
