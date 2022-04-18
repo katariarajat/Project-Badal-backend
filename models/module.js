@@ -46,7 +46,6 @@ const eventSchema = new Schema({
     db_tables : [String],
     commit_id : String,
     repo : String,
-        
 });
 
 module.exports = mongoose.model('Module', eventSchema);

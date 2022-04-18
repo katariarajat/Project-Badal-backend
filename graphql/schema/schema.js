@@ -207,7 +207,7 @@ type RootQuery {
     GetCompany : [Organisation]
     GetNgo : [Organisation]
     
-    GetEmployeForCompany(orgId : String!) : [User]!
+    GetEmployeeForCompany(orgId : String!) : [User]!
 
     GetAllProjects : [Project!]!
     MyProjects : [Project]!

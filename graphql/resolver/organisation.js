@@ -179,7 +179,7 @@ module.exports = {
           throw err;
         }
       },
-      GetEmployeForCompany : async (args,req) => {
+      GetEmployeeForCompany : async (args,req) => {
         if(!req.isAuth)
         {
           throw new Error(errorName.UNAUTHORIZED);
@@ -189,7 +189,8 @@ module.exports = {
           throw new Error("ACCESS DENIED");
         }
         try{
-          const users = await User.find({orgId : args.companyId});
+          const users = await User.find({orgId : args.orgId}).populate("orgId").populate("coreId").populate("ngoId");
+          console.log(users);
           return users.map(user => {
             return {...user._doc,_id:user.id};
           });

@@ -32,7 +32,7 @@ module.exports = {
                 db_tables : args.moduleInput.db_tables,
                 skills : args.moduleInput.skills,
             });
-            const result = await newModule.save().populate('skills');
+            const result = await newModule.save();
             return {...result._doc,_id:result.id};
         }
         catch{
@@ -45,7 +45,8 @@ module.exports = {
           throw new Error(errorName.UNAUTHORIZED);
         }
         try{
-            const modules = await Module.findOne({projectId: args.projectId}).populate('skills');
+            const modules = await Module.find({projectId: args.projectId}).populate('skills');
+            console.log(modules);
             return modules.map(modules => {
                 return {...modules._doc,_id: modules.id};
             });
