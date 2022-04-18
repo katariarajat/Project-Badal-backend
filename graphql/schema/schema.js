@@ -20,7 +20,6 @@ type Organisation{
     created_at: String      
     updated_at: String
     deleted_at: String
-    tags : [Tag]
 }
 
 input OrganisationInput{
@@ -117,6 +116,7 @@ type User {
     created_at: String 
     updated_at: String
     deleted_at: String
+    skill : [Skill]
 }
 
 

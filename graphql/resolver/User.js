@@ -49,11 +49,12 @@ module.exports = {
         coreId : coreId,
         ngoId : ngoId,
         isAdmin : isAdmin,
+        skill : args.userinput.skill
         });
     
         const result = await user.save();
-        const finaluser = await User.find({_id:result.id}).populate("orgId").populate("coreId").populate("ngoId");
-        return { ...finaluser._doc, password: password, _id: finaluser.id };
+        const finaluser = await User.findOne({_id:result.id}).populate("orgId").populate("coreId").populate("ngoId").populate("skill");
+        return { ...finaluser._doc, _id: finaluser.id, password: password };
       },
       GetUserData : async (args,req) => {
         if(!req.isAuth)

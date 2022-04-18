@@ -36,12 +36,12 @@ const OrganisationSchema = new Schema({
     deleted_at:{
         type:String,
     },
-    tags : [
-        {
-            type: Schema.Types.ObjectId,
-            ref : "SkillTags"
-        }
-    ]
+    // tags : [
+    //     {
+    //         type: Schema.Types.ObjectId,
+    //         ref : "SkillTags"
+    //     }
+    // ]
 });
 
 module.exports = mongoose.model('Organisation', OrganisationSchema);

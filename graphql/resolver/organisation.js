@@ -46,19 +46,8 @@ module.exports = {
 
       var password = makePassword(10);
       const hashedPassword = await bcrypt.hash(password, 12);
-      var orgId,coreId,ngoId;
-      if(req.userType == usertype.CORE)
-      { 
-        coreId = req.orgId;
-      }
-      else if(req.userType == usertype.COMP)
-      {
-        orgId = req.orgId;
-      }
-      else if(req.userType == usertype.NGO)
-      {
-        ngoId = req.orgId;
-      }
+      var orgId=result.id,coreId,ngoId;
+      
       const user = new User({
         email: args.organisationinput.email,
         password: hashedPassword,
@@ -108,8 +97,26 @@ module.exports = {
           });
     
           const result = await organisation.save();
-    
-          return { ...result._doc, _id: result.id };
+          var password = makePassword(10);
+          const hashedPassword = await bcrypt.hash(password, 12);
+          var orgId,coreId,ngoId=result.id;
+          
+          const user = new User({
+            email: args.organisationinput.email,
+            password: hashedPassword,
+            name: "Admin"+args.organisationinput.name,
+            address: args.organisationinput.address,
+            pincode: args.organisationinput.pincode,
+            type: req.userType,
+            created_at: new Date().toString(),
+            orgId : orgId,
+            coreId : coreId,
+            ngoId : ngoId,
+            isAdmin : "YES",
+            });
+          const result_user = await user.save();
+          console.log(result_user)
+          return { ...result._doc, password : password,_id: result.id };
         } catch (err) {
           throw err;
         }
