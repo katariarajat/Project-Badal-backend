@@ -18,6 +18,7 @@ module.exports = {
       throw new Error(errorName.USER_DO_NOT_EXISTS);
     }
     var orgid;
+    console.log(user);
     if (user.type == usertype.CORE) {
       orgid = user.coreId;
     }
@@ -27,6 +28,8 @@ module.exports = {
     else {
       orgid = user.ngoId;
     }
+    
+    console.log({ userId: user.id, email: user.email, userType: user.type, isAdmin: user.isAdmin, orgId: orgid });
     const token = jwt.sign(
       { userId: user.id, email: user.email, userType: user.type, isAdmin: user.isAdmin, orgId: orgid },
       'ProjectBadal',

@@ -54,7 +54,7 @@ module.exports = {
         name: "Admin"+args.organisationinput.name,
         address: args.organisationinput.address,
         pincode: args.organisationinput.pincode,
-        type: req.userType,
+        type: usertype.COMP,
         created_at: new Date().toString(),
         orgId : orgId,
         coreId : coreId,
@@ -107,7 +107,7 @@ module.exports = {
             name: "Admin"+args.organisationinput.name,
             address: args.organisationinput.address,
             pincode: args.organisationinput.pincode,
-            type: req.userType,
+            type: usertype.NGO,
             created_at: new Date().toString(),
             orgId : orgId,
             coreId : coreId,
@@ -191,7 +191,7 @@ module.exports = {
         {
           throw new Error(errorName.UNAUTHORIZED);
         }
-        if(req.userType != usertype.CORE && req.orgId != args.companyId)
+        if(req.userType != usertype.CORE && req.orgId != args.orgId)
         {
           throw new Error("ACCESS DENIED");
         }
@@ -199,7 +199,7 @@ module.exports = {
           const users = await User.find({orgId : args.orgId}).populate("orgId").populate("coreId").populate("ngoId");
           console.log(users);
           return users.map(user => {
-            return {...user._doc,_id:user.id};
+            return {...user._doc,_id:user.id,password:null};
           });
         }
         catch{

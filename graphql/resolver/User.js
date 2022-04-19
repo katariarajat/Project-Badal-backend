@@ -24,6 +24,7 @@ module.exports = {
         const hashedPassword = await bcrypt.hash(password, 12);
 
         var orgId,coreId,ngoId;
+        console.log(req);
         if(req.userType == usertype.COMP)
         {
             orgId = req.orgId;
