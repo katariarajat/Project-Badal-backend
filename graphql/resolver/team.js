@@ -11,21 +11,23 @@ module.exports = {
         {
             throw new Error(errorName.UNAUTHORIZED);
         }
-        const team = await Team.findOne({name: args.teaminput.name, organisation  : args.teaminput.orgId});
+        const team = await Team.findOne({name: args.teaminput.name, orgId  : args.teaminput.orgId});
         if(team){
             throw new Error(errorName.ALREADY_EXIST);
         }
         else 
         {
             var orgId = (args.teaminput.orgId)?args.teaminput.orgId:req.orgId;
+            console.log(orgId, args.teaminput.orgId);
             const newteam= new Team({
-                name: args.teaminput.name,
+                name : args.teaminput.name,
                 participants : args.teaminput.participants,
-                taskMeta: args.teaminput.taskMeta,
-                organisation: orgId,
+                skill : args.teaminput.skill,
+                orgId : orgId,
             });
             const result = await newteam.save();
-            return {...result._doc,_id: result.id};
+            const finalresult = await Team.findOne({name : args.teaminput.name, orgId  : args.teaminput.orgId}).populate("skill").populate("orgId").populate("participants")
+            return {...finalresult._doc,_id: finalresult.id };
         }
     },
 
@@ -35,7 +37,7 @@ module.exports = {
             throw new Error(errorName.UNAUTHORIZED);
         }
         try{
-            const Allteams = await Team.find({organisation : args.orgId}).populate('organisation');
+            const Allteams = await Team.find({organisation : args.orgId}).populate("skill").populate("orgId").populate("participants");
             return Allteams.map(team => {
                 return {...team._doc,
                     _id: team.id}
@@ -46,17 +48,18 @@ module.exports = {
         }
     },
     
-    ShowAllTeams: async (args,req) => {
+    GetAllTeams: async (args,req) => {
         if(!req.isAuth)
         {
             throw new Error(errorName.UNAUTHORIZED);
         }
+        console.log(args);
         // if(req.userType != usertype.CORE)
         // {
         //     throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
         // }
         try{
-            const teams = await Team.find();
+            const teams = await Team.find().populate("skill").populate("orgId").populate("participants");
             return teams.map(team => {
                 return {...team._doc,_id: team.id};
             });

@@ -119,6 +119,23 @@ type User {
     skill : [Skill]
 }
 
+type UserWithoutPassword {
+    _id:ID
+    email: String!
+    name: String!
+    phoneNumber : String
+    address: String
+    type: String
+    ngoId : Organisation
+    orgId : Organisation
+    coreId : Organisation
+    isAdmin : String
+    created_at: String 
+    updated_at: String
+    deleted_at: String
+    skill : [Skill]
+}
+
 
 input UserInput{
     email: String!
@@ -140,25 +157,18 @@ input UserInputByCore{
     type : String!
 }
 
-
 type Team{
-    name: String
-    participants : [User]
-    taskMeta : [Tag]
-}
-
-type returnTeam{
     _id : ID!
     name: String
-    participants : [User]
-    taskMeta : [Tag]
-    organisation : Organisation
+    participants : [UserWithoutPassword]
+    skill : [Skill]
+    orgId : Organisation
 }
 
 input TeamInput{
     name: String
     participants : [String]
-    taskMeta : [String]
+    skill : [String]
     orgId : String
 }
 
@@ -202,19 +212,19 @@ type Skill{
 type RootQuery {
     
     login(email: String!, password: String!) : AuthData
-    GetUserData : User!
+    GetUserData : UserWithoutPassword!
 
     GetCompany : [Organisation]
     GetNgo : [Organisation]
     
-    GetEmployeeForCompany(orgId : String!) : [User]!
+    GetEmployeeForCompany(orgId : String!) : [UserWithoutPassword]!
 
     GetAllProjects : [Project!]!
     MyProjects : [Project]!
     GetProjectForNgoByNgoId(ngoId: String!) : [Project]!
 
-    GetAllTeams : [returnTeam!]!
-    GetTeamsForCompany(orgId : String!) : [returnTeam]!
+    GetAllTeams : [Team!]!
+    GetTeamsForCompany(orgId : String!) : [Team]!
 
     GetModuleForProjectById(projectId: String!) : [Module]!
     GetProjectsForCompanies(companiesId : String!) : [Project]
@@ -246,8 +256,8 @@ type RootMutation {
 
     UpdateStatusOfTask(TaskId: String!,status : String!) : Task!
 
-    AddEmployeeToCompany(employeeId: String!,companyId: String!) : User!
-    RemoveEmployeeFromCompany(employeeId: String!) : User!
+    AddEmployeeToCompany(employeeId: String!,companyId: String!) : UserWithoutPassword!
+    RemoveEmployeeFromCompany(employeeId: String!) : UserWithoutPassword!
 
     GlobalSkillAdd(skills : [String!]!) : [Skill]
     GlobalSkillRemove(skills : [String!]!) : [Skill]

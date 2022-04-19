@@ -12,13 +12,13 @@ const eventSchema = new Schema({
                 ref: 'User'
             }
     ],
-    taskMeta : [
+    skill : [
         {
             type : Schema.Types.ObjectId,
             ref: 'SkillTags'
         }
     ],
-    organisation : {
+    orgId : {
         type : Schema.Types.ObjectId,
         ref: 'Organisation'
     }
