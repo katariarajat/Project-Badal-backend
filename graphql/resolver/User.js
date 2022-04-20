@@ -28,15 +28,28 @@ module.exports = {
         if(req.userType == usertype.COMP)
         {
             orgId = req.orgId;
+            const org = await Organisation.findOne({_id : orgId});
+            var k = parseInt(org.size)+1;
+            org.size = k.toString();
+            await org.save();
         }
         if(req.userType == usertype.CORE)
         {
             coreId = req.orgId;
+            const org = await Core.findOne({_id : orgId});
+            var k = parseInt(org.size)+1;
+            org.size = k.toString();
+            await org.save();
         }
         if(req.userType == usertype.NGO)
         {
             ngoId = req.orgId;
+            const org = await Ngo.findOne({_id : orgId});
+            var k = parseInt(org.size)+1;
+            org.size = k.toString();
+            await org.save();
         }
+
         var isAdmin = (req.userType == usertype.CORE)?"YES":args.userinput.isAdmin;
         const user = new User({
         email: args.userinput.email,
