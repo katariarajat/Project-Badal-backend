@@ -38,7 +38,7 @@ module.exports = {
         }
         try{
             console.log(args);
-            const Allteams = await Team.find({organisation : args.orgId}).populate("skill").populate("orgId").populate("participants");
+            const Allteams = await Team.find({orgId : args.orgId}).populate("skill").populate("orgId").populate("participants");
             console.log(Allteams);
             return Allteams.map(team => {
                 return {...team._doc,

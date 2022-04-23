@@ -49,7 +49,7 @@ module.exports = {
             updated_at : new Date().toString(),
             deleted_at : null,
             ngoId : args.projectinput.ngoId,
-            status : "00",
+            status : "",
             tags : args.projectinput.tags,
           });
     
