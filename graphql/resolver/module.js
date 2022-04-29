@@ -34,7 +34,7 @@ module.exports = {
                 skills : args.moduleInput.skills,
                 noOfTasks : "0",
                 noOfCompletedTasks: "0",
-
+                noOfOngoingTasks : "0"
             });
             const result = await newModule.save();
             
@@ -46,6 +46,8 @@ module.exports = {
             project.progress = ((noOfCompletedModules/k)*100).toString();
             await project.save();
             // Done Project Change
+
+
             return {...result._doc,_id:result.id};
         }
         catch{
@@ -58,8 +60,7 @@ module.exports = {
           throw new Error(errorName.UNAUTHORIZED);
         }
         try{
-            const modules = await Module.find({projectId: args.projectId}).populate('skills');
-            console.log(modules);
+            const modules = await Module.find({projectId: args.projectId}).populate('skills').populate('Team');
             return modules.map(modules => {
                 return {...modules._doc,_id: modules.id};
             });
@@ -90,6 +91,7 @@ module.exports = {
                     }
                 }
             });
+
             const project = await Project.findOne({_id : args.moduleInput.projectId});
             var k = parseInt(project.noOfModules);
             var noOfCompletedModules = await Module.countDocuments({projectId : args.moduleInput.projectId,status: "COMPLETED"});

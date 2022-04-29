@@ -81,7 +81,7 @@ type Module{
     created_at: String
     updated_at:String
     deleted_at: String
-    assigned_to: String
+    assigned_to: Team
     skills : [Skill]
     ui_screen : [String]
     api_build : [String]

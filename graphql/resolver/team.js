@@ -155,7 +155,7 @@ module.exports = {
             await givenModule.save();
             return {
                 ...resultModuleTeam._doc,
-                _id: resultModuleTeam.id
+                _id: resultModuleTeam.id,
             };
         }
         else 

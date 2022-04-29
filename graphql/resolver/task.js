@@ -25,6 +25,7 @@ module.exports = {
             created_at: new Date().toString(),
             updated_at: new Date().toString(),
             participantsId: []
+            
         });
 
         // increasing the modules count in project
@@ -47,6 +48,14 @@ module.exports = {
             const task=await Task.findOne({_id:args.TaskId});
             task.status=args.status;
             await task.save();
+            const module = await Module.findOne({_id : task.moduleId});
+            module.noOfCompletedTasks = await Task.countDocuments({ModuleId : args.taskInput.ModuleId,status: "COMPLETED"});
+            module.noOfOngoingTasks = await Task.countDocuments({ModuleId : args.taskInput.ModuleId,status: "ONGOING"});
+            await module.save();
+
+            // module info changing 
+
+            // END
             return {...task._id,_id:task.id};
         }
         catch{

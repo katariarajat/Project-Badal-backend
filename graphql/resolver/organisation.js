@@ -7,6 +7,8 @@ const bcrypt = require('bcryptjs');
 const project = require('./project');
 const Project = require('../../models/project');
 
+
+
 module.exports = {
     createOrganisation: async (args,req) => {
       if(!req.isAuth)
@@ -158,7 +160,6 @@ module.exports = {
           }
         },
       GetNgo : async (args,req) => {
-        console.log("hello");
         if(!req.isAuth)
         {
           throw new Error(errorName.UNAUTHORIZED);
