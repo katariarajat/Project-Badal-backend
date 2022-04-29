@@ -20,6 +20,8 @@ type Organisation{
     created_at: String      
     updated_at: String
     deleted_at: String
+    NumberOfOnGoingProjects : String
+    NumberOfcompletedProjects : String
 }
 
 input OrganisationInput{
@@ -51,6 +53,8 @@ type Project{
     repoId : String
     status: String
     tags : [Tag]
+    noOfModules : String
+    progress : String
 }
 
 input ProjectInput{
@@ -189,6 +193,8 @@ type Task{
     created_at: String
     updated_at: String
     status: String
+    noOfTasks : String
+    noOfCompletedTasks : String
 }
 
 input TaskInput{
@@ -202,6 +208,8 @@ type AuthData{
     userId: ID!
     token: String!
     tokenExpiration: Int!
+    teamId : String
+    userRole : String
 }
 
 type Skill{

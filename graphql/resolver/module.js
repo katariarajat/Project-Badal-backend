@@ -3,6 +3,7 @@ const team = require('../../models/team');
 const { errorName, usertype, errorType} = require('../../constants');
 const req = require('express/lib/request');
 const ModuleTeam = require('../../models/moduleTeam');
+const Project = require('../../models/project');
 
 module.exports = {
     AddModuleToProjectById : async (args,req) => {
@@ -18,7 +19,7 @@ module.exports = {
             const newModule= new Module({
                 projectId: args.moduleInput.projectId,
                 description: args.moduleInput.description,
-                status: args.moduleInput.status,
+                status: "UNASSIGNED",
                 name : args.moduleInput.name,
                 start_date : args.moduleInput.start_date,
                 end_date: null,
@@ -31,8 +32,20 @@ module.exports = {
                 repo : args.moduleInput.repo,
                 db_tables : args.moduleInput.db_tables,
                 skills : args.moduleInput.skills,
+                noOfTasks : "0",
+                noOfCompletedTasks: "0",
+
             });
             const result = await newModule.save();
+            
+            // increasing the modules count in project
+            const project = await Project.findOne({_id : args.moduleInput.projectId});
+            var k = parseInt(project.noOfModules)+1;
+            project.noOfModules = k.toString();
+            var noOfCompletedModules = await Module.countDocuments({projectId : args.moduleInput.projectId,status: "COMPLETED"});
+            project.progress = ((noOfCompletedModules/k)*100).toString();
+            await project.save();
+            // Done Project Change
             return {...result._doc,_id:result.id};
         }
         catch{
@@ -77,6 +90,12 @@ module.exports = {
                     }
                 }
             });
+            const project = await Project.findOne({_id : args.moduleInput.projectId});
+            var k = parseInt(project.noOfModules);
+            var noOfCompletedModules = await Module.countDocuments({projectId : args.moduleInput.projectId,status: "COMPLETED"});
+            project.progress = ((noOfCompletedModules/k)*100).toString();
+            await project.save();
+            
         }
         catch{
             throw err;

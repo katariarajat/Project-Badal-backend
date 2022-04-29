@@ -12,7 +12,6 @@ module.exports = {
         }
 
         const module=await Module.findOne({_id: args.taskInput.ModuleId});
-        console.log(module);
         if(!module)
         {
             throw Error("Module do not exits");
@@ -20,13 +19,21 @@ module.exports = {
         const newTask = new Task({
             name: args.taskInput.name,
             description: args.taskInput.description,
-            status : args.taskInput.status,
+            status : "ONGOING",
             assigned_to: null,
             ModuleId: args.taskInput.ModuleId,
             created_at: new Date().toString(),
             updated_at: new Date().toString(),
             participantsId: []
         });
+
+        // increasing the modules count in project
+        var k = parseInt(module.noOfTasks)+1;
+        module.noOfTasks = k.toString();
+        module.noOfCompletedTasks = await Task.countDocuments({ModuleId : args.taskInput.ModuleId,status: "COMPLETED"});
+        await module.save();
+        // Done Module Change
+
         const result = await newTask.save();
         return {...result._doc,_id:result.id};
     },

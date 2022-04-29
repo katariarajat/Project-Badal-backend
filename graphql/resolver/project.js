@@ -3,6 +3,8 @@ const Project = require('../../models/project');
 const {errorName, usertype} = require('../../constants');
 const Organisation = require('../../models/organisation')
 const ModuleTeam = require('../../models/moduleTeam');
+const Module = require('../../models/module');
+
 module.exports = {
     GetAllProjects : async function(args,req){
       if(!req.isAuth)
@@ -15,10 +17,11 @@ module.exports = {
               throw new Error('No Project Added');
             }
             return existingprojects.map(existingprojects => {
-                return {
+              return {
                 ...existingprojects._doc,
                 _id: existingprojects.id,
               };
+
               });
           } catch (err) {
             throw err;
@@ -49,8 +52,10 @@ module.exports = {
             updated_at : new Date().toString(),
             deleted_at : null,
             ngoId : args.projectinput.ngoId,
-            status : "",
+            status : "ONGOING",
+            progress : "0",
             tags : args.projectinput.tags,
+            noOfModules : "0"
           });
     
           const result = await project.save();
@@ -104,21 +109,21 @@ module.exports = {
         }
         
       },
-      MyProjects: async (args,req)=> {
-        if(!req.isAuth)
-        {
-          throw new Error(errorName.UNAUTHORIZED);
-        }
-        try{
-          const NgoProjects=await Project.find({NGOId:req.orgId});
-        return NgoProjects.map(NgoProjects => {
-          return {...NgoProjects._doc,_id:NgoProjects.id};
-        });
-        }
-        catch{
-          throw err;
-        }
-      },
+      // MyProjects: async (args,req)=> {
+      //   if(!req.isAuth)
+      //   {
+      //     throw new Error(errorName.UNAUTHORIZED);
+      //   }
+      //   try{
+      //     const NgoProjects=await Project.find({NGOId:req.orgId});
+      //   return NgoProjects.map(NgoProjects => {
+      //     return {...NgoProjects._doc,_id:NgoProjects.id};
+      //   });
+      //   }
+      //   catch{
+      //     throw err;
+      //   }
+      // },
       GetProjectsForCompanies: async (args,req) => {
         if(!req.isAuth)
         {

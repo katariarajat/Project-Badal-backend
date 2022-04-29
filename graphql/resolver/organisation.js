@@ -4,6 +4,8 @@ const Ngo = require('../../models/ngo');
 const User = require('../../models/user');
 const {makePassword} = require('../../GlobalFunction');
 const bcrypt = require('bcryptjs');
+const project = require('./project');
+const Project = require('../../models/project');
 
 module.exports = {
     createOrganisation: async (args,req) => {
@@ -156,14 +158,19 @@ module.exports = {
           }
         },
       GetNgo : async (args,req) => {
+        console.log("hello");
         if(!req.isAuth)
         {
           throw new Error(errorName.UNAUTHORIZED);
         }
         try{
           const ngo = await Ngo.find({});
-          return ngo.map(ngo => {
-            return {...ngo._doc,_id : ngo.id};
+          console.log(ngo);
+          return ngo.map(async ngo => {
+            var NumberOfOnGoingProjects = await Project.countDocuments({ngoId : ngo._id,status:"ONGOING"});
+            var NumberOfcompletedProjects =  await Project.countDocuments({ngoId : ngo._id,status:"COMPLETED"});
+            return {...ngo._doc,_id : ngo.id, NumberOfOnGoingProjects : NumberOfOnGoingProjects,
+                      NumberOfcompletedProjects : NumberOfcompletedProjects }
           });
         }
         catch{

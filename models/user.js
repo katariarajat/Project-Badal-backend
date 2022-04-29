@@ -28,7 +28,11 @@ const userschema = new Schema({
     skill : [{
         type: Schema.Types.ObjectId,
         ref: 'SkillTags'
-    }]
+    }],
+    teamId : {
+        type : Schema.Types.ObjectId,
+        ref: 'Team'
+    }
 });
 
 module.exports = mongoose.model('User',userschema);

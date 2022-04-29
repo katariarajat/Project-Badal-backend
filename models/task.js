@@ -15,7 +15,10 @@ const eventSchema = new Schema({
     },
     created_at: String,
     updated_at:String,
-    status: String,
+    status: {
+        type : String,
+        enum : ["ONGOING","COMPLETED"]
+    },
 });
 
 module.exports = mongoose.model('Task', eventSchema);

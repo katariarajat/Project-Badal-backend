@@ -13,7 +13,6 @@ const eventSchema = new Schema({
                 type : Schema.Types.ObjectId,
                 ref: 'Team'
             },
-            Status : String,
         }
     ],
     projectId : {

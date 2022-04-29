@@ -38,6 +38,6 @@ module.exports = {
       }
     );
     console.log(token, user.id);
-    return { userId: user.id, token: token, tokenExpiration: 1 };
+    return { userId: user.id, token: token, tokenExpiration: 1, userRole : user.type, teamId : user.teamId};
   }
 };

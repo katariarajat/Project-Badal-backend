@@ -16,13 +16,19 @@ const eventSchema = new Schema({
         ref: 'Ngo'
     },
     repoId : String,
-    status: String,
+    status: {
+        type : String, enum : ["ONGOING","COMPLETED"]
+    },
+    noOfModules : String,
     tags : [
         {
             type: Schema.Types.ObjectId,
             ref: 'SkillTags'
         }
-    ]
+    ],
+    noOfModules : String,
+    progress : String,
+
 });
 
 module.exports = mongoose.model('Project', eventSchema);

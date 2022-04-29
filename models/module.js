@@ -15,6 +15,7 @@ const eventSchema = new Schema({
     },
     status:{
         type: String,
+        enum : ["UNASSIGNED","ONGOING","COMPLETED"]
     },
     start_date:{
         type: String,
@@ -42,10 +43,16 @@ const eventSchema = new Schema({
             ref: 'SkillTags'
         }
     ],
+    assigned_to : {
+        type : Schema.Types.ObjectId,
+        ref: 'Team'
+    },
     ui_screen : [String],
     db_tables : [String],
     commit_id : String,
     repo : String,
+    noOfTasks : String,
+    noOfCompletedTasks : String,
 });
 
 module.exports = mongoose.model('Module', eventSchema);
