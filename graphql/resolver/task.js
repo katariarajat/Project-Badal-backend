@@ -31,6 +31,7 @@ module.exports = {
         var k = parseInt(module.noOfTasks)+1;
         module.noOfTasks = k.toString();
         module.noOfCompletedTasks = await Task.countDocuments({ModuleId : args.taskInput.ModuleId,status: "COMPLETED"});
+        module.noOfOngoingTasks = await Task.countDocuments({ModuleId : args.taskInput.ModuleId,status: "ONGOING"});
         await module.save();
         // Done Module Change
 

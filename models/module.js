@@ -53,6 +53,7 @@ const eventSchema = new Schema({
     repo : String,
     noOfTasks : String,
     noOfCompletedTasks : String,
+    noOfOngoingTasks : String
 });
 
 module.exports = mongoose.model('Module', eventSchema);

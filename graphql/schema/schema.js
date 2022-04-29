@@ -88,6 +88,9 @@ type Module{
     db_tables: [String]
     commit_id : String
     repo : String
+    noOfOngoingTasks : String
+    noOfTasks : String
+    noOfCompletedTasks : String
 }
 
 input ModuleInput{
@@ -193,8 +196,7 @@ type Task{
     created_at: String
     updated_at: String
     status: String
-    noOfTasks : String
-    noOfCompletedTasks : String
+    
 }
 
 input TaskInput{
