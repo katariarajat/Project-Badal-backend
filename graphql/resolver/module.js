@@ -60,7 +60,7 @@ module.exports = {
           throw new Error(errorName.UNAUTHORIZED);
         }
         try{
-            const modules = await Module.find({projectId: args.projectId}).populate('skills').populate('Team');
+            const modules = await Module.find({projectId: args.projectId}).populate('skills').populate('assigned_to');
             return modules.map(modules => {
                 return {...modules._doc,_id: modules.id};
             });
