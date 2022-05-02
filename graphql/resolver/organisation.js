@@ -145,7 +145,7 @@ module.exports = {
               address: args.organisationinput.address,
               phoneNumber: args.organisationinput.address,
               pincode: args.organisationinput.pincode,
-              size : "",
+              size : "1",
               company_description: args.organisationinput.company_description,
               urlWebsite : args.organisationinput.urlWebsite,
               created_at: new Date().toString(),      

@@ -24,7 +24,6 @@ module.exports = {
         const hashedPassword = await bcrypt.hash(password, 12);
 
         var orgId,coreId,ngoId;
-        console.log(req);
         if(req.userType == usertype.COMP)
         {
             orgId = req.orgId;
@@ -36,7 +35,8 @@ module.exports = {
         if(req.userType == usertype.CORE)
         {
             coreId = req.orgId;
-            const org = await Core.findOne({_id : orgId});
+            const org = await Core.findOne({_id : coreId});
+            console.log(org);
             var k = parseInt(org.size)+1;
             org.size = k.toString();
             await org.save();
@@ -44,7 +44,7 @@ module.exports = {
         if(req.userType == usertype.NGO)
         {
             ngoId = req.orgId;
-            const org = await Ngo.findOne({_id : orgId});
+            const org = await Ngo.findOne({_id : ngoId});
             var k = parseInt(org.size)+1;
             org.size = k.toString();
             await org.save();

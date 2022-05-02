@@ -25,7 +25,7 @@ async function Initialize() {
                 address: "IIIT-Hyderabad",
                 pincode: "500032",
                 contact: "",
-                size: "",
+                size: "1",
                 company_description: "",
                 urlWebsite: "https://iiit.ac.in",
                 created_at: new Date().toString(),

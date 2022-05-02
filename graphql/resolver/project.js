@@ -33,7 +33,7 @@ module.exports = {
       {
         throw new Error(errorName.UNAUTHORIZED);
       }
-      if(req.orgId != args.projectinput.orgId && req.userType != usertype.CORE)
+      if(req.orgId != args.projectinput.ngoId && req.userType != usertype.CORE)
       {
         throw new Error("Not Authorized to create Project")
       }

@@ -19,6 +19,11 @@ const eventSchema = new Schema({
         type : String,
         enum : ["ONGOING","COMPLETED"]
     },
+    assigned_to : {
+        type: Schema.Types.ObjectId,
+        ref : "User"
+    },
 });
+
 
 module.exports = mongoose.model('Task', eventSchema);

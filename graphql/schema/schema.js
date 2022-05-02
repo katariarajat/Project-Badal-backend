@@ -196,7 +196,7 @@ type Task{
     created_at: String
     updated_at: String
     status: String
-    
+    assigned_to : UserWithoutPassword
 }
 
 input TaskInput{
@@ -227,14 +227,15 @@ type RootQuery {
     GetCompany : [Organisation]
     GetNgo : [Organisation]
     
-    GetEmployeeForCompany(orgId : String!) : [UserWithoutPassword]!
+    GetEmployeeForCompany(orgId : String!) : [UserWithoutPassword]
 
-    GetAllProjects : [Project!]!
-    MyProjects : [Project]!
-    GetProjectForNgoByNgoId(ngoId: String!) : [Project]!
+    GetAllProjects : [Project!]
+    MyProjects : [Project]
+    GetProjectForNgoByNgoId(ngoId: String!) : [Project]
 
     GetAllTeams : [Team!]!
     GetTeamsForCompany(orgId : String!) : [Team]!
+    GetTeamDetail(teamId : String!) : Team
 
     GetModuleForProjectById(projectId: String!) : [Module]!
     GetProjectsForCompanies(companiesId : String!) : [Project]
@@ -259,6 +260,7 @@ type RootMutation {
 
     UpdateModuleStatus(status: String!,moduleId: String!) : Module!
     AddTaskToModuleById(taskInput: TaskInput) : Task!
+    AssignTaskToUser(UserId : String!,taskId : String) : Task
 
     createTeam(teaminput : TeamInput) : Team!
     AddUserToTeam(userIds : [String], teamId : String) : Team!

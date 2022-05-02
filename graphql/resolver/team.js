@@ -6,6 +6,11 @@ const req = require("express/lib/request");
 const ModuleTeam = require('../../models/moduleTeam');
 const user = require("../../models/user");
 
+async function returnTeam(teamId){
+    const team = await Team.findOne({_id : teamId}).populate("participants").populate("skill").populate("orgId");
+    return {...team._doc,_id: team.id };
+}
+
 module.exports = {
     createTeam: async (args, req) => {
         if(!req.isAuth)
@@ -172,6 +177,13 @@ module.exports = {
                 _id: resultModuleTeam.id
             };
         }
+    },
+    GetTeamDetail: async (args,req) => {
+        if(!req.isAuth)
+        {
+            throw new Error(errorName.UNAUTHORIZED);
+        }
+        return returnTeam(teamId);
     },
     
 }
