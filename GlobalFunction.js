@@ -8,6 +8,8 @@ module.exports = {
      charactersLength));
        }
        return result;
+    },
+    authValidate(req) {
+
     }
-    
 }

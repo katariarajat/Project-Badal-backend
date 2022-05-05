@@ -11,6 +11,8 @@ async function returnTeam(teamId){
     return {...team._doc,_id: team.id };
 }
 
+
+
 module.exports = {
     createTeam: async (args, req) => {
         if(!req.isAuth)
@@ -23,21 +25,23 @@ module.exports = {
         }
         else 
         {
+            // console.log(args);
+            // console.log(args.teaminput.participants.length);
             var orgId = (args.teaminput.orgId)?args.teaminput.orgId:req.orgId;
-            console.log(orgId, args.teaminput.orgId);
-            var user_list = []
-            for(var i=0;i<length(args.teaminput.skill);i++)
+            // console.log("Debug statement = ",orgId, args.teaminput.orgId);
+            let user_list = new Array(args.teaminput.participants.length);
+            for(var i=0;i<args.teaminput.participants.length;i++)
             {
                 const user = await User.findOne({_id : args.teaminput.participants[i]});
-                user_list.append(user);
+                user_list[i] = user;
                 if(user.teamId != null)
                 {
                     throw new Error(user.name + "Already exist in another team");
                 }
-                if(user.orgId != args.teaminput.orgId)
-                {
-                    throw new Error(user.name + "Does not belong to Your Organisation");
-                }
+                // if(user.orgId != orgId)
+                // {
+                //     throw new Error(user.name + "Does not belong to Your Organisation");
+                // }
             }
             const newteam= new Team({
                 name : args.teaminput.name,
@@ -46,12 +50,12 @@ module.exports = {
                 orgId : orgId,
             });
             const result = await newteam.save();
-            for(var i=0;i<length(user_list);i++)
+            for(var i=0;i<user_list.length;i++)
             {
                 user_list[i].teamId = result.id;
                 await user_list[i].save();
             }
-            const finalresult = await Team.findOne({name : args.teaminput.name, orgId  : args.teaminput.orgId}).populate("skill").populate("orgId").populate("participants")
+            const finalresult = await Team.findOne({name : args.teaminput.name, orgId  : orgId}).populate("skill").populate("orgId").populate("participants")
             return {...finalresult._doc,_id: finalresult.id };
         }
     },
