@@ -277,12 +277,11 @@ type RootMutation {
 
 type ModuleTeam {
     _id : ID!
-    moduleId: [Module]
-    Status : String
-    projectId : Project
-    orgId : Organisation
+    moduleId : Module
+    teamId : Team
+    projectId : String
+    orgId : String
 }
-
 
 schema {
     query: RootQuery

@@ -1,3 +1,6 @@
+const ModuleTeam = require('./models/moduleTeam');
+
+
 module.exports = {
     makePassword(length) {
         var result           = '';
@@ -9,7 +12,11 @@ module.exports = {
        }
        return result;
     },
-    authValidate(req) {
-
+    async returnModuleTeam(moduleTeamId){
+      const moduleTeam = await ModuleTeam.findOne({_id : moduleTeamId}).populate('moduleId').populate('teamId');
+      return {
+        ...moduleTeam._doc,
+        _id : moduleTeam._id
+      }
     }
 }

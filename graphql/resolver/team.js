@@ -5,13 +5,13 @@ const {errorName, usertype} = require('../../constants');
 const req = require("express/lib/request");
 const ModuleTeam = require('../../models/moduleTeam');
 const user = require("../../models/user");
+const { returnModuleTeam } = require("../../GlobalFunction");
+const Module = require("../../models/module");
 
 async function returnTeam(teamId){
     const team = await Team.findOne({_id : teamId}).populate("participants").populate("skill").populate("orgId");
     return {...team._doc,_id: team.id };
 }
-
-
 
 module.exports = {
     createTeam: async (args, req) => {
@@ -138,49 +138,31 @@ module.exports = {
     },
 
     AssignModuleToTeam: async (args,req) => {
-        
         if(!req.isAuth)
         {
             throw new Error(errorName.UNAUTHORIZED);
         }
-        const oldModuleTeam = await ModuleTeam.findOne({orgId : req.orgId, projectId: args.projectId});
-        const givenModule = await Module.findOne({_id : args.moduleId});
-        givenModule.assigned_to = args.teamId;
-        if(!oldModuleTeam)
+        
+        console.log("Hello");
+        const temp = await ModuleTeam.findOne({moduleId : args.moduleId});
+        if(temp)
         {
-            const moduleTeam = new ModuleTeam({
-                modules : [
-                    {
-                        moduleId : args.moduleId,
-                        team : args.teamId,
-                    }
-                ],
-                projectId : givenModule.projectId,
-                orgId : req.orgId,
-            }); 
-            
-            const resultModuleTeam = await moduleTeam.save();
-            
-            await givenModule.save();
-            return {
-                ...resultModuleTeam._doc,
-                _id: resultModuleTeam.id,
-            };
+            throw new Error("Module is already assigned to another team.");
         }
-        else 
-        {
-            const module = {
-                moduleId: args.moduleId,
-                team : args.teamId,
-            }
-            oldModuleTeam.modules.push(module);
-            const resultModuleTeam = await oldModuleTeam.save();
-            
-            return {
-                ...resultModuleTeam._doc,
-                _id: resultModuleTeam.id
-            };
-        }
+        const module = await Module.findOne({_id: args.moduleId});
+        
+        module.assigned_to = args.teamId;
+        await module.save();
+        const team = await Team.findOne({_id : args.teamId});
+        console.log(team);
+        const moduleTeam = new ModuleTeam({
+            moduleId : args.moduleId,
+            teamId : args.teamId,
+            projectId : module.projectId,
+            orgId : team.orgId
+        });
+        const result = await moduleTeam.save();
+        return returnModuleTeam(result.id);
     },
     GetTeamDetail: async (args,req) => {
         if(!req.isAuth)

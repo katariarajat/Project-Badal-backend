@@ -7,6 +7,7 @@ const Project = require('../../models/project');
 
 module.exports = {
     AddModuleToProjectById : async (args,req) => {
+        console.log("HI");
         if(!req.isAuth)
         {
           throw new Error(errorName.UNAUTHORIZED);
@@ -15,7 +16,7 @@ module.exports = {
         {
             throw new Error(errorName.IIIT_CORE_ACCESS_ONLY);
         }
-        try{
+        
             const newModule= new Module({
                 projectId: args.moduleInput.projectId,
                 description: args.moduleInput.description,
@@ -34,25 +35,24 @@ module.exports = {
                 skills : args.moduleInput.skills,
                 noOfTasks : "0",
                 noOfCompletedTasks: "0",
-                noOfOngoingTasks : "0"
+                noOfOngoingTasks : "0",
             });
             const result = await newModule.save();
-            
+            // console.log(result);
             // increasing the modules count in project
             const project = await Project.findOne({_id : args.moduleInput.projectId});
+
             var k = parseInt(project.noOfModules)+1;
             project.noOfModules = k.toString();
             var noOfCompletedModules = await Module.countDocuments({projectId : args.moduleInput.projectId,status: "COMPLETED"});
             project.progress = ((noOfCompletedModules/k)*100).toString();
+            
             await project.save();
+
             // Done Project Change
 
-
             return {...result._doc,_id:result.id};
-        }
-        catch{
-            throw err;
-        }
+        
     },
     GetModuleForProjectById : async (args,req) => {
         if(!req.isAuth)
