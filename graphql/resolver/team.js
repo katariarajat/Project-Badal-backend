@@ -169,7 +169,7 @@ module.exports = {
         {
             throw new Error(errorName.UNAUTHORIZED);
         }
-        return returnTeam(teamId);
+        return returnTeam(args.teamId);
     },
     
 }
