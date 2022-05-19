@@ -36,6 +36,7 @@ module.exports = {
                 noOfTasks : "0",
                 noOfCompletedTasks: "0",
                 noOfOngoingTasks : "0",
+                requirements : args.moduleInput.requirements,
             });
             const result = await newModule.save();
             // console.log(result);

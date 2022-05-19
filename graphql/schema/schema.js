@@ -91,6 +91,7 @@ type Module{
     noOfOngoingTasks : String
     noOfTasks : String
     noOfCompletedTasks : String
+    requirements : String
 }
 
 input ModuleInput{
@@ -106,6 +107,7 @@ input ModuleInput{
     db_tables: [String]
     commit_id : String
     repo : String
+    requirements : String
 }
 
 type User {

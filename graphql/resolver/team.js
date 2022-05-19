@@ -38,10 +38,6 @@ module.exports = {
                 {
                     throw new Error(user.name + "Already exist in another team");
                 }
-                // if(user.orgId != orgId)
-                // {
-                //     throw new Error(user.name + "Does not belong to Your Organisation");
-                // }
             }
             const newteam= new Team({
                 name : args.teaminput.name,
