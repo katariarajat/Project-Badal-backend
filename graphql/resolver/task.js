@@ -95,8 +95,8 @@ module.exports = {
         {
             throw new Error(errorName.UNAUTHORIZED);
         }
-        const task = await Task.findOne({_id : taskId});
-        task.assigned_to = UserId;
+        const task = await Task.findOne({_id : args.taskId});
+        task.assigned_to = args.UserId;
         const result = await task.save();
         return returnTask(result.id);
     }
