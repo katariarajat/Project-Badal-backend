@@ -55,7 +55,7 @@ module.exports = {
       const user = new User({
         email: args.organisationinput.email,
         password: hashedPassword,
-        name: "Admin"+args.organisationinput.name,
+        name: "Admin - "+args.organisationinput.name,
         address: args.organisationinput.address,
         pincode: args.organisationinput.pincode,
         type: usertype.COMP,
@@ -108,7 +108,7 @@ module.exports = {
           const user = new User({
             email: args.organisationinput.email,
             password: hashedPassword,
-            name: "Admin"+args.organisationinput.name,
+            name: "Admin - "+args.organisationinput.name,
             address: args.organisationinput.address,
             pincode: args.organisationinput.pincode,
             type: usertype.NGO,

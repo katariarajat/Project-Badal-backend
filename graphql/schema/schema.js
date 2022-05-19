@@ -83,9 +83,9 @@ type Module{
     deleted_at: String
     assigned_to: Team
     skills : [Skill]
-    ui_screen : [String]
-    api_build : [String]
-    db_tables: [String]
+    ui_screen : String
+    api_build : String
+    db_tables : String
     commit_id : String
     repo : String
     noOfOngoingTasks : String
@@ -102,9 +102,9 @@ input ModuleInput{
     start_date:String
     end_date: String
     skills : [String]
-    ui_screen : [String]
-    api_build : [String]
-    db_tables: [String]
+    ui_screen : String
+    api_build : String
+    db_tables : String
     commit_id : String
     repo : String
     requirements : String

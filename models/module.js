@@ -47,9 +47,10 @@ const eventSchema = new Schema({
         type : Schema.Types.ObjectId,
         ref: 'Team'
     },
-    requirements : [String],
-    ui_screen : [String],
-    db_tables : [String],
+    requirements : String,
+    api_build : String,
+    ui_screen : String,
+    db_tables : String, 
     commit_id : String,
     repo : String,
     noOfTasks : String,

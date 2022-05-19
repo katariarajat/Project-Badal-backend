@@ -37,6 +37,7 @@ module.exports = {
       {
         throw new Error("Not Authorized to create Project")
       }
+      
       if(req.isAdmin == "NO")
       {
         throw new Error("ONLY ADMIN CAN ADD PROJECT");
@@ -55,7 +56,8 @@ module.exports = {
             status : "ONGOING",
             progress : "0",
             tags : args.projectinput.tags,
-            noOfModules : "0"
+            noOfModules : "0",
+            
           });
     
           const result = await project.save();

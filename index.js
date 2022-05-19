@@ -20,7 +20,7 @@ async function Initialize() {
         }
         else {
             const organisation = new Core({
-                email: "IIIT-H",
+                email: "iiith@iiit.ac.in",
                 name: "IIIT-H",
                 address: "IIIT-Hyderabad",
                 pincode: "500032",
@@ -39,7 +39,7 @@ async function Initialize() {
         // console.log(isuser); 
         if (!isuser) {
             const user = new User({
-                email: "ADMIN",
+                email: "admin@iiit.ac.in",
                 password: hashedPassword,
                 name: "Admin",
                 contact: "",
