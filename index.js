@@ -8,10 +8,11 @@ const graphQlResolvers = require('./graphql/resolver/index');
 const Core = require('./models/core');
 const User = require('./models/user');
 const bcrypt = require('bcryptjs');
+const {yo} = require('./gitlab/index');
 // Mongodb connecting 
 
 async function Initialize() {
-
+    yo();
     try {
         const existingOrganisation = await Core.findOne({ email: "IIIT-H" });
         let result = existingOrganisation;

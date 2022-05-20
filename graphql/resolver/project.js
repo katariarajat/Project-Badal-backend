@@ -57,7 +57,6 @@ module.exports = {
             progress : "0",
             tags : args.projectinput.tags,
             noOfModules : "0",
-            
           });
     
           const result = await project.save();
