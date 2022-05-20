@@ -36,7 +36,7 @@ async function Initialize() {
             result = await organisation.save();
         }
         const hashedPassword = await bcrypt.hash("ADMIN", 12);
-        const isuser = await User.findOne({ email: "ADMIN" });
+        const isuser = await User.findOne({ email: "admin@iiit.ac.in" });
         // console.log(isuser); 
         if (!isuser) {
             const user = new User({
