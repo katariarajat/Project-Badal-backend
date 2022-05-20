@@ -13,9 +13,9 @@ module.exports = {
         // let projects = await api.Projects.all({maxPages:2});
         // let users = await api.Users.all();
         // console.log(users);
-        let projects = await api.Projects.create();
-        console.log(projects);
-
+        // let projects = await api.Projects.create();
+        // console.log(projects);
+        console.log("IN YO");
         
         // console.log(projects);
         // console.log(projects.length);
