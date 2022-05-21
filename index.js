@@ -8,7 +8,7 @@ const graphQlResolvers = require('./graphql/resolver/index');
 const Core = require('./models/core');
 const User = require('./models/user');
 const bcrypt = require('bcryptjs');
-const {createProject, getProjectGitlab} = require('./gitlab/index');
+// const {createProject, getProjectGitlab} = require('./gitlab/index');
 // Mongodb connecting 
 
 async function Initialize() {
