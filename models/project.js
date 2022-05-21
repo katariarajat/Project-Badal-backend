@@ -28,7 +28,10 @@ const eventSchema = new Schema({
     ],
     noOfModules : String,
     progress : String,
-
+    gitlabProjectId : String,
+    ssh_url_to_repo : String,
+    http_url_to_repo : String,
+    web_url : String,
 });
 
 module.exports = mongoose.model('Project', eventSchema);

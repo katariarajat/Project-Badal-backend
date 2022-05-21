@@ -55,6 +55,10 @@ type Project{
     tags : [Tag]
     noOfModules : String
     progress : String
+    gitlabProjectId : String
+    ssh_url_to_repo : String
+    http_url_to_repo : String
+    web_url : String
 }
 
 input ProjectInput{
@@ -66,7 +70,7 @@ input ProjectInput{
     repoId : String
     status: String
     tags : [String]
-    ngoId : String!
+    ngoId : String
 }
 
 

@@ -8,11 +8,12 @@ const graphQlResolvers = require('./graphql/resolver/index');
 const Core = require('./models/core');
 const User = require('./models/user');
 const bcrypt = require('bcryptjs');
-const {yo} = require('./gitlab/index');
+const {createProject, getProjectGitlab} = require('./gitlab/index');
 // Mongodb connecting 
 
 async function Initialize() {
-    yo();
+    // createProject();
+    // getProjectGitlab();
     try {
         const existingOrganisation = await Core.findOne({ email: "IIIT-H" });
         let result = existingOrganisation;
@@ -67,7 +68,7 @@ async function Initialize() {
 mongoose.connect(
     'mongodb://127.0.0.1:27017/' + process.env.MONGO_DB, { useNewUrlParser: true }
 ).then(() => {
-    app.listen(8000, () => {
+    app.listen(3000, () => {
         console.log("Mongodb connected");
         console.log("Server started");
         Initialize();
