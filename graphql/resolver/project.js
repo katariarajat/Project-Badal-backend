@@ -29,6 +29,8 @@ module.exports = {
     },
 
     createProject: async (args,req) => {
+      // console.log("KEYCHECK 1");
+      
       if(!req.isAuth)
       {
         throw new Error(errorName.UNAUTHORIZED);
@@ -42,9 +44,16 @@ module.exports = {
       {
         throw new Error("ONLY ADMIN CAN ADD PROJECT");
       }
+      const ifproject = await Project.findOne({name : args.projectinput.name});
+      
+      if(ifproject)
+      {
+        throw new Error("Project Already exists.");
+      }
         try {
 
           const gitlabProject = await createProjectGitlab(args.projectinput);
+          
           var ngoId = (args.projectinput.ngoId)?args.projectinput.ngoId:req.orgId;
           const project = new Project({
             name : args.projectinput.name,
@@ -117,21 +126,6 @@ module.exports = {
         }
         
       },
-      // MyProjects: async (args,req)=> {
-      //   if(!req.isAuth)
-      //   {
-      //     throw new Error(errorName.UNAUTHORIZED);
-      //   }
-      //   try{
-      //     const NgoProjects=await Project.find({NGOId:req.orgId});
-      //   return NgoProjects.map(NgoProjects => {
-      //     return {...NgoProjects._doc,_id:NgoProjects.id};
-      //   });
-      //   }
-      //   catch{
-      //     throw err;
-      //   }
-      // },
       GetProjectsForCompanies: async (args,req) => {
         if(!req.isAuth)
         {
