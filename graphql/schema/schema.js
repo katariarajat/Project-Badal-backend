@@ -220,6 +220,10 @@ type AuthData{
     userRole : String
 }
 
+type Minio{
+    url : String
+}
+
 type Skill{
     _id : ID!
     skill : String
@@ -249,6 +253,8 @@ type RootQuery {
     GetTaskForModuleById(moduleId: String!) : [Task!]!
     
     GetSkills : [Skill]!
+
+    GetPresignedUrl(name : String!) : Minio 
 }
 
 
